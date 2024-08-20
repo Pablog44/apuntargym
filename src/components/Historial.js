@@ -71,8 +71,6 @@ function Historial() {
         <div>
         <header>
             <h1>Historial de Ejercicios</h1>
-            <button onClick={handleLogout}>Cerrar Sesión</button>
-            <button onClick={() => navigate('/registrar')}>Registrar Nuevo Ejercicio</button>
         </header>
         <main>
             <section id="records-section">
