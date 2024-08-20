@@ -7,6 +7,15 @@ body {
         padding: 0;
         background-color: #f4f4f4;
     }
+    /* src/Styles.css */
+
+/* Estilo para centrar el título */
+    h1 {
+        text-align: center;
+        margin-top: 20px;
+        font-size: 2rem;
+        color: #333;
+    }
     
     /* Estilo del contenedor del Dashboard */
     .form-container {
