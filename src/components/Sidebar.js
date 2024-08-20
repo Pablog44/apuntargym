@@ -1,7 +1,7 @@
 // src/components/Sidebar.js
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import './Sidebar.css'; // Estilo para la barra lateral
+import './Sidebar.css';
 
 const Sidebar = () => {
   const [isExpanded, setIsExpanded] = useState(false);
@@ -10,37 +10,33 @@ const Sidebar = () => {
     setIsExpanded(!isExpanded);
   };
 
+  const closeSidebar = () => {
+    setIsExpanded(false);
+  };
+
   return (
-    <div className={isExpanded ? "sidebar expanded" : "sidebar"}>
-      <button className="toggle-button" onClick={toggleSidebar}>
-        {isExpanded ? "<<" : ">>"}
-      </button>
-      <nav className="sidebar-nav">
-        <Link to="/dashboard">
-          <span className="icon">🏠</span>
-          {isExpanded && <span className="text">Dashboard</span>}
-        </Link>
-        <Link to="/historial">
-          <span className="icon">📜</span>
-          {isExpanded && <span className="text">Ver Historial</span>}
-        </Link>
-        <Link to="/ajustes">
-          <span className="icon">⚙️</span>
-          {isExpanded && <span className="text">Ajustes</span>}
-        </Link>
-        <Link to="/resultados">
-          <span className="icon">📊</span>
-          {isExpanded && <span className="text">Resultados</span>}
-        </Link>
-        <Link to="/nuevo">
-          <span className="icon">➕</span>
-          {isExpanded && <span className="text">Añadir Grupos/Ejercicios</span>}
-        </Link>
-        <button onClick={() => alert('Cerrar sesión')}>
-          <span className="icon">🚪</span>
-          {isExpanded && <span className="text">Cerrar Sesión</span>}
+    <div>
+      {/* Ícono de hamburguesa visible solo cuando el menú está cerrado */}
+      {!isExpanded && (
+        <button className="hamburger-icon" onClick={toggleSidebar}>
+          &#9776;
         </button>
-      </nav>
+      )}
+
+      {/* Barra lateral */}
+      <div className={isExpanded ? "sidebar expanded" : "sidebar"}>
+        <button className="close-button" onClick={toggleSidebar}>
+          &times;
+        </button>
+        <nav className="sidebar-nav" onClick={closeSidebar}>
+          <Link to="/dashboard">Dashboard</Link>
+          <Link to="/historial">Ver Historial</Link>
+          <Link to="/ajustes">Ajustes</Link>
+          <Link to="/resultados">Resultados</Link>
+          <Link to="/nuevo">Añadir Grupos/Ejercicios</Link>
+          <button onClick={() => alert('Cerrar sesión')}>Cerrar Sesión</button>
+        </nav>
+      </div>
     </div>
   );
 };

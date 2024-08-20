@@ -1,7 +1,8 @@
 /* src/components/Sidebar.css */
 
+/* Estilos generales para la barra lateral */
 .sidebar {
-    width: 60px;
+    width: 120px; /* Ajusta la barra lateral para que sea casi el doble de ancha */
     background-color: #333;
     color: white;
     height: 100vh;
@@ -11,37 +12,34 @@
     padding: 10px;
     transition: width 0.3s ease;
     z-index: 1000;
+    overflow: hidden;
   }
   
   .sidebar.expanded {
-    width: 200px;
+    width: 300px; /* Ancho cuando está expandida */
   }
   
-  .sidebar .toggle-button {
-    background-color: #444;
-    border: none;
-    color: white;
-    padding: 10px;
-    cursor: pointer;
-    width: 100%;
-    margin-bottom: 10px;
+  .sidebar .toggle-button,
+  .hamburger-icon {
+    display: none;
   }
   
   .sidebar .sidebar-nav {
     display: flex;
     flex-direction: column;
-    gap: 15px;
+    gap: 20px;
+    margin-top: 20px;
   }
   
   .sidebar .sidebar-nav a,
   .sidebar .sidebar-nav button {
-    display: flex;
-    align-items: center;
     text-decoration: none;
     color: white;
     padding: 10px;
     border-radius: 4px;
     transition: background-color 0.2s ease;
+    font-size: 1rem;
+    cursor: pointer;
   }
   
   .sidebar .sidebar-nav a:hover,
@@ -49,47 +47,79 @@
     background-color: #555;
   }
   
-  .sidebar .sidebar-nav .icon {
-    font-size: 1.5rem;
-    margin-right: 10px;
-    color: white; /* Cambia a negro si prefieres un estilo monocromático */
-  }
-  
-  /* Ocultar el texto si la barra lateral no está expandida */
-  .sidebar .sidebar-nav .text {
-    display: none;
-  }
-  
-  /* Mostrar el texto solo si la barra lateral está expandida */
-  .sidebar.expanded .sidebar-nav .text {
-    display: inline;
-  }
-  
   .sidebar .sidebar-nav button {
     background-color: #dc3545;
     border: none;
-    padding: 10px;
-    color: white;
-    cursor: pointer;
-    border-radius: 4px;
   }
   
   .sidebar .sidebar-nav button:hover {
     background-color: #c82333;
   }
   
+  /* Estilo del botón de cerrar cuando la barra está expandida */
+  .close-button {
+    display: none;
+    background: none;
+    border: none;
+    color: white;
+    font-size: 24px;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
+  }
+  
+  /* Estilo del ícono de hamburguesa en móviles */
+  .hamburger-icon {
+    display: none;
+    font-size: 18px; /* Tamaño más pequeño para los tres puntos */
+    background: none;
+    border: none;
+    color: #333;
+    position: fixed;
+    top: 10px;
+    right: 15px;
+    z-index: 1500;
+    cursor: pointer;
+    width: 35px; /* Tamaño del círculo */
+    height: 35px; /* Tamaño del círculo */
+    background-color: #555; /* Color gris oscuro */
+    border-radius: 50%; /* Hace el botón redondo */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
   /* Ajustes para dispositivos móviles */
   @media (max-width: 768px) {
     .sidebar {
-      width: 60px;
+      display: none;
+    }
+  
+    .hamburger-icon {
+      display: flex; /* Mostrar el ícono de hamburguesa en móviles */
     }
   
     .sidebar.expanded {
-      width: 60px;
+      display: block;
+      width: 100vw;
+      height: 100vh;
+      padding: 20px;
     }
   
-    .sidebar .sidebar-nav .text {
-      display: none;
+    .sidebar.expanded .close-button {
+      display: block;
+    }
+  
+    .sidebar.expanded .sidebar-nav {
+      gap: 20px;
+      margin-top: 50px;
+      font-size: 1.2rem;
+    }
+  
+    .sidebar.expanded .sidebar-nav a,
+    .sidebar.expanded .sidebar-nav button {
+      font-size: 1.5rem;
     }
   }
   
