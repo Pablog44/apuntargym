@@ -1,69 +1,95 @@
 /* src/components/Sidebar.css */
 
 .sidebar {
-        width: 60px;
-        background-color: #333;
-        color: white;
-        height: 100vh;
-        position: fixed;
-        top: 0;
-        left: 0;
-        padding: 10px;
-        transition: width 0.3s ease;
+    width: 60px;
+    background-color: #333;
+    color: white;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    padding: 10px;
+    transition: width 0.3s ease;
+    z-index: 1000;
+  }
+  
+  .sidebar.expanded {
+    width: 200px;
+  }
+  
+  .sidebar .toggle-button {
+    background-color: #444;
+    border: none;
+    color: white;
+    padding: 10px;
+    cursor: pointer;
+    width: 100%;
+    margin-bottom: 10px;
+  }
+  
+  .sidebar .sidebar-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  .sidebar .sidebar-nav a,
+  .sidebar .sidebar-nav button {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: white;
+    padding: 10px;
+    border-radius: 4px;
+    transition: background-color 0.2s ease;
+  }
+  
+  .sidebar .sidebar-nav a:hover,
+  .sidebar .sidebar-nav button:hover {
+    background-color: #555;
+  }
+  
+  .sidebar .sidebar-nav .icon {
+    font-size: 1.5rem;
+    margin-right: 10px;
+    color: white; /* Cambia a negro si prefieres un estilo monocromático */
+  }
+  
+  /* Ocultar el texto si la barra lateral no está expandida */
+  .sidebar .sidebar-nav .text {
+    display: none;
+  }
+  
+  /* Mostrar el texto solo si la barra lateral está expandida */
+  .sidebar.expanded .sidebar-nav .text {
+    display: inline;
+  }
+  
+  .sidebar .sidebar-nav button {
+    background-color: #dc3545;
+    border: none;
+    padding: 10px;
+    color: white;
+    cursor: pointer;
+    border-radius: 4px;
+  }
+  
+  .sidebar .sidebar-nav button:hover {
+    background-color: #c82333;
+  }
+  
+  /* Ajustes para dispositivos móviles */
+  @media (max-width: 768px) {
+    .sidebar {
+      width: 60px;
     }
-    
+  
     .sidebar.expanded {
-        width: 200px;
+      width: 60px;
     }
-    
-    .sidebar .toggle-button {
-        background-color: #444;
-        border: none;
-        color: white;
-        padding: 10px;
-        cursor: pointer;
-        width: 100%;
-        margin-bottom: 10px;
+  
+    .sidebar .sidebar-nav .text {
+      display: none;
     }
-    
-    .sidebar .sidebar-nav {
-        display: flex;
-        flex-direction: column;
-        gap: 15px;
-    }
-    
-    .sidebar .sidebar-nav a {
-        text-decoration: none;
-        color: white;
-        padding: 10px;
-        border-radius: 4px;
-        transition: background-color 0.2s ease;
-    }
-    
-    .sidebar .sidebar-nav a:hover {
-        background-color: #555;
-    }
-    
-    .sidebar .sidebar-nav button {
-        background-color: #dc3545;
-        border: none;
-        padding: 10px;
-        color: white;
-        cursor: pointer;
-        border-radius: 4px;
-    }
-    
-    .sidebar .sidebar-nav button:hover {
-        background-color: #c82333;
-    }
-    
-    @media (max-width: 768px) {
-        .sidebar {
-        width: 60px;
-        }
-    
-        .sidebar.expanded {
-        width: 60px;
-        }
-    }
-    
+  }
+  
