@@ -1,0 +1,69 @@
+/* src/components/Sidebar.css */
+
+.sidebar {
+        width: 60px;
+        background-color: #333;
+        color: white;
+        height: 100vh;
+        position: fixed;
+        top: 0;
+        left: 0;
+        padding: 10px;
+        transition: width 0.3s ease;
+    }
+    
+    .sidebar.expanded {
+        width: 200px;
+    }
+    
+    .sidebar .toggle-button {
+        background-color: #444;
+        border: none;
+        color: white;
+        padding: 10px;
+        cursor: pointer;
+        width: 100%;
+        margin-bottom: 10px;
+    }
+    
+    .sidebar .sidebar-nav {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+    }
+    
+    .sidebar .sidebar-nav a {
+        text-decoration: none;
+        color: white;
+        padding: 10px;
+        border-radius: 4px;
+        transition: background-color 0.2s ease;
+    }
+    
+    .sidebar .sidebar-nav a:hover {
+        background-color: #555;
+    }
+    
+    .sidebar .sidebar-nav button {
+        background-color: #dc3545;
+        border: none;
+        padding: 10px;
+        color: white;
+        cursor: pointer;
+        border-radius: 4px;
+    }
+    
+    .sidebar .sidebar-nav button:hover {
+        background-color: #c82333;
+    }
+    
+    @media (max-width: 768px) {
+        .sidebar {
+        width: 60px;
+        }
+    
+        .sidebar.expanded {
+        width: 60px;
+        }
+    }
+    
