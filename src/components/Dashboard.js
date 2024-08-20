@@ -16,19 +16,8 @@ function Dashboard() {
   const [currentUser, setCurrentUser] = useState(null);
   const navigate = useNavigate();
 
-  const loadMuscleGroups = useCallback(async () => {
-    const muscleGroupsRef = collection(db, 'muscleGroups');
-    const snapshot = await getDocs(muscleGroupsRef);
-
-    if (snapshot.empty) {
-      await initializeDefaultMuscleGroups();
-    }
-
-    const groups = snapshot.docs.map((doc) => doc.id);
-    setMuscleGroups(groups);
-  }, []); // No hay dependencias circulares, así que el array está vacío
-
-  const initializeDefaultMuscleGroups = useCallback(async () => {
+  // Mueve initializeDefaultMuscleGroups fuera de los hooks de React
+  const initializeDefaultMuscleGroups = async () => {
     const defaultGroups = {
       Pecho: ['Press Banca', 'Press Inclinado', 'Aperturas'],
       Espalda: ['Dominadas', 'Remo con Barra', 'Jalón al Pecho'],
@@ -41,9 +30,20 @@ function Dashboard() {
       await setDoc(doc(db, 'muscleGroups', group), { exercises });
     }
 
-    // Recarga los grupos musculares después de inicializarlos
-    loadMuscleGroups();
-  }, [loadMuscleGroups]); // Agregamos `loadMuscleGroups` como dependencia porque se usa dentro
+    loadMuscleGroups(); // Recarga los grupos musculares después de inicializarlos
+  };
+
+  const loadMuscleGroups = useCallback(async () => {
+    const muscleGroupsRef = collection(db, 'muscleGroups');
+    const snapshot = await getDocs(muscleGroupsRef);
+
+    if (snapshot.empty) {
+      await initializeDefaultMuscleGroups(); // Solo inicializa si está vacío
+    } else {
+      const groups = snapshot.docs.map((doc) => doc.id);
+      setMuscleGroups(groups);
+    }
+  }, []); // Ahora este hook no depende de funciones externas
 
   useEffect(() => {
     const fetchData = async () => {
@@ -52,13 +52,13 @@ function Dashboard() {
           navigate('/');
         } else {
           setCurrentUser(user);
-          loadMuscleGroups(); // Ahora esta función ya está definida antes de este hook
+          loadMuscleGroups(); // Carga los grupos musculares cuando se autentica
         }
       });
     };
 
     fetchData();
-  }, [navigate, loadMuscleGroups]); // Incluimos `loadMuscleGroups` como dependencia
+  }, [navigate, loadMuscleGroups]);
 
   const handleMuscleGroupChange = (e) => {
     setSelectedMuscleGroup(e.target.value);
@@ -79,10 +79,9 @@ function Dashboard() {
 
   const handleSaveExercise = async () => {
     if (currentUser && selectedMuscleGroup && selectedExercise && weight && repetitions) {
-      // Obtener la fecha y hora actual en España si no se selecciona una fecha
       const dateTime = exerciseDate
         ? new Date(exerciseDate).toISOString()
-        : new Date().toLocaleString('en-GB', { timeZone: 'Europe/Madrid', hour12: false }).replace(',', '');
+        : new Date().toISOString(); // Si no se selecciona una fecha, usar la fecha actual en formato ISO
 
       await addDoc(collection(db, 'exerciseRecords'), {
         userId: currentUser.uid,
@@ -99,8 +98,8 @@ function Dashboard() {
   };
 
   return (
-    <div>
-      <h1>Registro de Ejercicios</h1>
+    <div className="dashboard-container">
+      <h1 className="dashboard-title">Registro de Ejercicios</h1>
       <div className="form-container">
         <label htmlFor="muscle-group">Grupo Muscular:</label>
         <select id="muscle-group" value={selectedMuscleGroup} onChange={handleMuscleGroupChange}>
@@ -124,7 +123,7 @@ function Dashboard() {
         <input type="number" id="repetitions" value={repetitions} onChange={(e) => setRepetitions(e.target.value)} />
         <label htmlFor="exercise-date">Fecha:</label>
         <input type="datetime-local" id="exercise-date" value={exerciseDate} onChange={(e) => setExerciseDate(e.target.value)} />
-        <button onClick={handleSaveExercise}>Guardar Ejercicio</button>
+        <button className="save-button" onClick={handleSaveExercise}>Guardar Ejercicio</button>
       </div>
     </div>
   );
