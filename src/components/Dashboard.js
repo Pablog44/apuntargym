@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { auth, db } from '../firebase';
-import { collection, getDocs, doc, getDoc, setDoc, addDoc } from 'firebase/firestore';
+import { collection, getDocs, doc, getDoc, addDoc, query, where } from 'firebase/firestore';
 import { onAuthStateChanged } from 'firebase/auth';
 import { useNavigate } from 'react-router-dom';
 import '../Styles.css';
@@ -18,32 +18,28 @@ function Dashboard() {
   const navigate = useNavigate();
 
   const loadMuscleGroups = useCallback(async () => {
+    if (!currentUser) return;
+
     const muscleGroupsRef = collection(db, 'muscleGroups');
-    const snapshot = await getDocs(muscleGroupsRef);
+    const userMuscleGroupsRef = query(collection(db, 'userMuscleGroups'), where('userId', '==', currentUser.uid));
 
-    if (snapshot.empty) {
-      // Si no hay datos, inicializa los grupos musculares predeterminados
-      const defaultGroups = {
-        Pecho: ['Press Banca', 'Press Inclinado', 'Aperturas'],
-        Espalda: ['Dominadas', 'Remo con Barra', 'Jalón al Pecho'],
-        Brazos: ['Curl con Barra', 'Tríceps Fondo', 'Martillo'],
-        Piernas: ['Sentadilla', 'Prensa', 'Peso Muerto'],
-        Hombros: ['Press Militar', 'Elevaciones Laterales', 'Pájaro'],
-      };
+    // Cargar los grupos predeterminados y personalizados
+    const [nativeSnapshot, userSnapshot] = await Promise.all([getDocs(muscleGroupsRef), getDocs(userMuscleGroupsRef)]);
 
-      for (const [group, exercises] of Object.entries(defaultGroups)) {
-        await setDoc(doc(db, 'muscleGroups', group), { exercises });
-      }
+    const groups = [];
 
-      // Vuelve a cargar los grupos musculares después de inicializarlos
-      const updatedSnapshot = await getDocs(muscleGroupsRef);
-      const groups = updatedSnapshot.docs.map((doc) => doc.id);
-      setMuscleGroups(groups);
-    } else {
-      const groups = snapshot.docs.map((doc) => doc.id);
-      setMuscleGroups(groups);
-    }
-  }, []);
+    // Agregar los grupos musculares predeterminados
+    nativeSnapshot.forEach((doc) => {
+      groups.push({ id: doc.id, isCustom: false });
+    });
+
+    // Agregar los grupos musculares personalizados
+    userSnapshot.forEach((doc) => {
+      groups.push({ id: doc.id.replace('Personalizado-', ''), isCustom: true });
+    });
+
+    setMuscleGroups(groups);
+  }, [currentUser]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -52,30 +48,64 @@ function Dashboard() {
           navigate('/');
         } else {
           setCurrentUser(user);
-          loadMuscleGroups();
         }
       });
     };
 
     fetchData();
-  }, [navigate, loadMuscleGroups]);
+  }, [navigate]);
 
-  const handleMuscleGroupChange = (e) => {
+  useEffect(() => {
+    if (currentUser) {
+      loadMuscleGroups();
+    }
+  }, [currentUser, loadMuscleGroups]);
+
+  const handleMuscleGroupChange = async (e) => {
     setSelectedMuscleGroup(e.target.value);
     loadExercises(e.target.value);
   };
 
   const loadExercises = useCallback(async (muscleGroup) => {
-    const docRef = doc(db, 'muscleGroups', muscleGroup);
-    const docSnap = await getDoc(docRef);
+    if (!currentUser) return;
 
-    if (docSnap.exists()) {
-      const data = docSnap.data();
-      setExercises(data.exercises || []);
+    const isCustomGroup = muscleGroups.find((group) => group.id === muscleGroup && group.isCustom);
+    let combinedExercises = [];
+
+    if (isCustomGroup) {
+      // Cargar ejercicios personalizados para el usuario
+      const userExercisesRef = query(
+        collection(db, 'userExercises'),
+        where('userId', '==', currentUser.uid),
+        where('muscleGroup', '==', muscleGroup)
+      );
+      const userSnapshot = await getDocs(userExercisesRef);
+
+      combinedExercises = userSnapshot.docs.map((doc) => doc.data().exercise);
     } else {
-      console.log(`No se encontraron ejercicios para el grupo muscular: ${muscleGroup}`);
+      // Cargar los ejercicios predeterminados
+      const docRef = doc(db, 'muscleGroups', muscleGroup);
+      const docSnap = await getDoc(docRef);
+
+      if (docSnap.exists()) {
+        const data = docSnap.data();
+        combinedExercises = data.exercises || [];
+      }
+
+      // Cargar ejercicios personalizados añadidos por el usuario para este grupo predeterminado
+      const userExercisesRef = query(
+        collection(db, 'userExercises'),
+        where('userId', '==', currentUser.uid),
+        where('muscleGroup', '==', muscleGroup)
+      );
+      const userSnapshot = await getDocs(userExercisesRef);
+
+      const customExercises = userSnapshot.docs.map((doc) => doc.data().exercise);
+      combinedExercises = [...combinedExercises, ...customExercises];
     }
-  }, []);
+
+    setExercises(combinedExercises);
+  }, [currentUser, muscleGroups]);
 
   const handleSaveExercise = async () => {
     if (currentUser && selectedMuscleGroup && selectedExercise && weight && repetitions) {
@@ -105,7 +135,9 @@ function Dashboard() {
         <select id="muscle-group" value={selectedMuscleGroup} onChange={handleMuscleGroupChange}>
           <option value="">Selecciona un grupo muscular</option>
           {muscleGroups.map((group) => (
-            <option key={group} value={group}>{group}</option>
+            <option key={group.id} value={group.id}>
+              {group.id} {group.isCustom ? '(Personalizado)' : ''}
+            </option>
           ))}
         </select>
         <label htmlFor="exercise">Ejercicio:</label>

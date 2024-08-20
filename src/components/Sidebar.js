@@ -36,7 +36,7 @@ const Sidebar = () => {
           <Link to="/historial">Ver Historial</Link>
           <Link to="/ajustes">Ajustes</Link>
           <Link to="/resultados">Resultados</Link>
-          <Link to="/nuevo">Añadir Grupos/Ejercicios</Link>
+          <Link to="/añadir">Añadir Grupos/Ejercicios</Link>
           <button onClick={() => alert('Cerrar sesión')}>Cerrar Sesión</button>
         </nav>
       </div>

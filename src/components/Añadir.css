@@ -1,0 +1,48 @@
+/* Estilos específicos para la página de Añadir */
+.añadir-container {
+        max-width: 800px;
+        margin: 0 auto;
+    }
+    
+    .añadir-title {
+        text-align: center;
+        font-size: 2rem;
+        margin-bottom: 20px;
+        color: #444;
+    }
+    
+    .form-container {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+        margin-top: 20px;
+    }
+    
+    .form-container label {
+        font-weight: bold;
+        color: #333;
+    }
+    
+    .form-container input,
+    .form-container select {
+        padding: 10px;
+        border-radius: 5px;
+        border: 1px solid #ddd;
+        font-size: 1rem;
+    }
+    
+    .form-container button {
+        padding: 10px 15px;
+        font-size: 1rem;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+    
+    .form-container button:hover {
+        background-color: #0056b3;
+    }
+    
