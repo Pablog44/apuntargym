@@ -4,7 +4,8 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Login from './components/Login';
 import Dashboard from './components/Dashboard';
 import Sidebar from './components/Sidebar';
-import './Styles.css'; // Asegúrate de que los estilos generales estén importados
+import './Styles.css'; // Asegúrate de que los estilos generales estén importados<
+import Historial from './components/Historial'; 
 
 function App() {
   return (
@@ -13,8 +14,9 @@ function App() {
         <Sidebar />
         <div className="main-content">
           <Routes>
-            <Route path="/" element={<Login />} />
-            <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/" element={<Login />} />
+          <Route path="/registrar" element={<Dashboard />} />
+          <Route path="/historial" element={<Historial />} />
           </Routes>
         </div>
       </div>

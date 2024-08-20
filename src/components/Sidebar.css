@@ -3,7 +3,7 @@
 /* Estilos generales para la barra lateral */
 .sidebar {
     width: 120px; /* Ajusta la barra lateral para que sea casi el doble de ancha */
-    background-color: #333;
+    background-color: #444;
     color: white;
     height: 100vh;
     position: fixed;
@@ -44,7 +44,7 @@
   
   .sidebar .sidebar-nav a:hover,
   .sidebar .sidebar-nav button:hover {
-    background-color: #555;
+    background-color: #666;
   }
   
   .sidebar .sidebar-nav button {
@@ -83,7 +83,7 @@
     cursor: pointer;
     width: 35px; /* Tamaño del círculo */
     height: 35px; /* Tamaño del círculo */
-    background-color: #555; /* Color gris oscuro */
+    background-color: #444; /* Color gris oscuro */
     border-radius: 50%; /* Hace el botón redondo */
     display: flex;
     justify-content: center;

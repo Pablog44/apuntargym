@@ -11,7 +11,7 @@ function Login() {
         onAuthStateChanged(auth, (user) => {
         if (user) {
             // Si el usuario ya está autenticado, redirigir al panel principal
-            navigate('/dashboard');
+            navigate('/registrar');
         }
         });
     }, [navigate]);
@@ -20,7 +20,7 @@ function Login() {
         signInWithPopup(auth, provider)
         .then((result) => {
             console.log('Autenticación exitosa:', result.user);
-            navigate('/dashboard');
+            navigate('/registrar');
         })
         .catch((error) => {
             console.error('Error durante la autenticación:', error.message);
