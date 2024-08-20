@@ -3,7 +3,8 @@ import { auth, db } from '../firebase';
 import { collection, query, where, orderBy, getDocs, deleteDoc, doc } from 'firebase/firestore';
 import { onAuthStateChanged } from 'firebase/auth';
 import { useNavigate } from 'react-router-dom';
-import '../Styles.css'; // Asegúrate de que los estilos estén importados
+import '../Styles.css';
+import './Historial.css'; // Importa los estilos específicos de Historial
 
 function Historial() {
   const [exerciseRecords, setExerciseRecords] = useState([]);
@@ -59,7 +60,7 @@ function Historial() {
   };
 
   return (
-    <div className="historial-container">
+    <div className="historial-container card-container">
       <header>
         <h1 className="historial-title">Historial de Ejercicios</h1>
       </header>

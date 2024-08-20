@@ -1,0 +1,17 @@
+/* Estilos específicos para el Dashboard */
+.dashboard-container {
+    max-width: 600px;
+}
+
+.dashboard-title {
+    font-size: 1.8rem;
+    margin-bottom: 20px;
+    text-align: center;
+    color: #444;
+}
+
+.form-container input, .form-container select {
+    padding: 10px;
+    font-size: 1rem;
+    border-radius: 5px;
+}

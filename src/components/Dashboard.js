@@ -4,6 +4,7 @@ import { collection, getDocs, doc, getDoc, setDoc, addDoc } from 'firebase/fires
 import { onAuthStateChanged } from 'firebase/auth';
 import { useNavigate } from 'react-router-dom';
 import '../Styles.css';
+import './Dashboard.css'; // Importa los estilos específicos de Dashboard
 
 function Dashboard() {
   const [muscleGroups, setMuscleGroups] = useState([]);
@@ -16,34 +17,33 @@ function Dashboard() {
   const [currentUser, setCurrentUser] = useState(null);
   const navigate = useNavigate();
 
-  // Mueve initializeDefaultMuscleGroups fuera de los hooks de React
-  const initializeDefaultMuscleGroups = async () => {
-    const defaultGroups = {
-      Pecho: ['Press Banca', 'Press Inclinado', 'Aperturas'],
-      Espalda: ['Dominadas', 'Remo con Barra', 'Jalón al Pecho'],
-      Brazos: ['Curl con Barra', 'Tríceps Fondo', 'Martillo'],
-      Piernas: ['Sentadilla', 'Prensa', 'Peso Muerto'],
-      Hombros: ['Press Militar', 'Elevaciones Laterales', 'Pájaro'],
-    };
-
-    for (const [group, exercises] of Object.entries(defaultGroups)) {
-      await setDoc(doc(db, 'muscleGroups', group), { exercises });
-    }
-
-    loadMuscleGroups(); // Recarga los grupos musculares después de inicializarlos
-  };
-
   const loadMuscleGroups = useCallback(async () => {
     const muscleGroupsRef = collection(db, 'muscleGroups');
     const snapshot = await getDocs(muscleGroupsRef);
 
     if (snapshot.empty) {
-      await initializeDefaultMuscleGroups(); // Solo inicializa si está vacío
+      // Si no hay datos, inicializa los grupos musculares predeterminados
+      const defaultGroups = {
+        Pecho: ['Press Banca', 'Press Inclinado', 'Aperturas'],
+        Espalda: ['Dominadas', 'Remo con Barra', 'Jalón al Pecho'],
+        Brazos: ['Curl con Barra', 'Tríceps Fondo', 'Martillo'],
+        Piernas: ['Sentadilla', 'Prensa', 'Peso Muerto'],
+        Hombros: ['Press Militar', 'Elevaciones Laterales', 'Pájaro'],
+      };
+
+      for (const [group, exercises] of Object.entries(defaultGroups)) {
+        await setDoc(doc(db, 'muscleGroups', group), { exercises });
+      }
+
+      // Vuelve a cargar los grupos musculares después de inicializarlos
+      const updatedSnapshot = await getDocs(muscleGroupsRef);
+      const groups = updatedSnapshot.docs.map((doc) => doc.id);
+      setMuscleGroups(groups);
     } else {
       const groups = snapshot.docs.map((doc) => doc.id);
       setMuscleGroups(groups);
     }
-  }, []); // Ahora este hook no depende de funciones externas
+  }, []);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -52,7 +52,7 @@ function Dashboard() {
           navigate('/');
         } else {
           setCurrentUser(user);
-          loadMuscleGroups(); // Carga los grupos musculares cuando se autentica
+          loadMuscleGroups();
         }
       });
     };
@@ -98,7 +98,7 @@ function Dashboard() {
   };
 
   return (
-    <div className="dashboard-container">
+    <div className="dashboard-container card-container">
       <h1 className="dashboard-title">Registro de Ejercicios</h1>
       <div className="form-container">
         <label htmlFor="muscle-group">Grupo Muscular:</label>

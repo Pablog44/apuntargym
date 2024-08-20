@@ -1,0 +1,62 @@
+/* Estilos específicos para el historial */
+.historial-container {
+    max-width: 800px;
+}
+
+.historial-title {
+    text-align: center;
+    font-size: 2rem;
+    margin-bottom: 20px;
+    color: #444;
+}
+
+/* Estilo de la lista de ejercicios */
+.records-list {
+    list-style-type: none;
+    padding: 0;
+}
+
+.record-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    margin-bottom: 10px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
+}
+
+.record-info {
+    font-size: 1rem;
+    color: #555;
+}
+
+.record-date {
+    font-weight: bold;
+    color: #007bff;
+}
+
+.record-muscle-group {
+    font-weight: bold;
+    color: #333;
+}
+
+.record-exercise {
+    color: #666;
+}
+
+.delete-button {
+    padding: 8px 12px;
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: background-color 0.3s;
+}
+
+.delete-button:hover {
+    background-color: #c82333;
+}
