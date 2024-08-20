@@ -29,7 +29,7 @@ const Sidebar = () => {
           &times;
         </button>
         <nav className="sidebar-nav" onClick={closeSidebar}>
-          <Link to="/dashboard">Dashboard</Link>
+          <Link to="/registrar">Dashboard</Link>
           <Link to="/historial">Ver Historial</Link>
           <Link to="/ajustes">Ajustes</Link>
           <Link to="/resultados">Resultados</Link>
