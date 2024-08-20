@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { db, auth } from '../firebase';
-import { collection, query, where, orderBy, getDocs } from 'firebase/firestore';
+import { collection, query, where, getDocs } from 'firebase/firestore';
 import { useNavigate } from 'react-router-dom';
 import '../Styles.css';
 import './Resultados.css';
@@ -43,7 +43,23 @@ function Resultados() {
     setFilteredRecords(records);
   };
 
-  const applyFilters = () => {
+  const sortAndDisplayResults = useCallback(
+    (records) => {
+      const sortedRecords = [...records].sort((a, b) => {
+        if (sortCriteria === 'dateTime') {
+          return new Date(b.dateTime) - new Date(a.dateTime);
+        } else if (sortCriteria === 'weight' || sortCriteria === 'repetitions') {
+          return b[sortCriteria] - a[sortCriteria];
+        }
+        return 0;
+      });
+
+      setFilteredRecords(sortedRecords);
+    },
+    [sortCriteria]
+  );
+
+  const applyFilters = useCallback(() => {
     let filtered = exerciseRecords;
 
     if (selectedGroup) {
@@ -54,24 +70,11 @@ function Resultados() {
     }
 
     sortAndDisplayResults(filtered);
-  };
-
-  const sortAndDisplayResults = (records) => {
-    const sortedRecords = [...records].sort((a, b) => {
-      if (sortCriteria === 'dateTime') {
-        return new Date(b.dateTime) - new Date(a.dateTime);
-      } else if (sortCriteria === 'weight' || sortCriteria === 'repetitions') {
-        return b[sortCriteria] - a[sortCriteria];
-      }
-      return 0;
-    });
-
-    setFilteredRecords(sortedRecords);
-  };
+  }, [exerciseRecords, selectedGroup, selectedExercise, sortAndDisplayResults]);
 
   useEffect(() => {
     applyFilters();
-  }, [sortCriteria]);
+  }, [applyFilters]);
 
   return (
     <div className="resultados-container card-container">
@@ -87,7 +90,6 @@ function Resultados() {
             onChange={(e) => setSelectedGroup(e.target.value)}
           >
             <option value="">Todos</option>
-            {/* Dinámicamente puedes agregar opciones aquí */}
             {[...new Set(exerciseRecords.map((record) => record.muscleGroup))].map((group) => (
               <option key={group} value={group}>
                 {group}
