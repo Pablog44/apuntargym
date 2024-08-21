@@ -65,6 +65,7 @@
 .logout-circle svg:hover
 {
   color:#444;
+  cursor: pointer;
 }
 
 .logout-container button svg {
@@ -147,10 +148,10 @@
     position: absolute;
     top: 15px;
     left: 50%; /* Coloca la "X" en el centro horizontal */
-    transform: translateX(-50%); /* Centra la "X" completamente */
+    transform: translateX(-50%) translateX(-10px); /* Centra la "X" completamente */
     background: #888; /* Color del fondo inicial del círculo */
     border: none;
-    border-radius: 50%; /* Hace que el botón sea un círculo */
+    border-radius: 100%; /* Hace que el botón sea un círculo */
     padding: 10px;
     cursor: pointer;
     transition: background-color 0.3s ease;

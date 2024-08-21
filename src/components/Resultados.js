@@ -48,8 +48,13 @@ function Resultados() {
       const sortedRecords = [...records].sort((a, b) => {
         if (sortCriteria === 'dateTime') {
           return new Date(b.dateTime) - new Date(a.dateTime);
-        } else if (sortCriteria === 'weight' || sortCriteria === 'repetitions') {
-          return b[sortCriteria] - a[sortCriteria];
+        } else if (sortCriteria === 'weight') {
+          if (b.weight === a.weight) {
+            return b.repetitions - a.repetitions; // Ordena por repeticiones si el peso es el mismo
+          }
+          return b.weight - a.weight; // Ordena por peso de mayor a menor
+        } else if (sortCriteria === 'repetitions') {
+          return b.repetitions - a.repetitions;
         }
         return 0;
       });

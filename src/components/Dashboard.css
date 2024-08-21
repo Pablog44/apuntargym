@@ -1,11 +1,11 @@
 /* Estilos específicos para el Dashboard */
 .dashboard-container {
-    max-width: 600px;
+    max-width: 800px;
 }
 
 .dashboard-title {
     font-size: 1.8rem;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
     text-align: center;
     color: #444;
 }
