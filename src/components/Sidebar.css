@@ -72,9 +72,6 @@
   transition: background-color 0.3s ease;
 }
 
-.logout-container button:hover {
-  background-color: #c82333;
-}
 
 .logout-container button svg {
   width: 30px;
