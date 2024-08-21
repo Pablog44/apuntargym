@@ -36,6 +36,8 @@ function Login() {
 
     return (
         <div className="login-container">
+            {/* Imagen del logo centrada */}
+            <img src={`${process.env.PUBLIC_URL}/logo192.png`} alt="Logo" className="login-logo" />
             <h2>Inicia sesión con tu cuenta de Google</h2>
             <button onClick={handleGoogleSignIn}>Iniciar Sesión con Google</button>
         </div>

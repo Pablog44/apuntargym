@@ -19,7 +19,9 @@ body {
         padding: 0;
         background-color: #f4f4f4;
     }
-    
+    h2 {
+      text-align: center;
+    }
     .login-container, header, main {
         display: flex;
         flex-direction: column;
@@ -59,7 +61,10 @@ body {
   font-size: calc(10px + 2vmin);
   color: white;
 }
-
+.login-logo {
+  width: 100px; /* Ajusta el tamaño según sea necesario */
+  margin-top: 20px; /* Espacio debajo de la imagen */
+}
 .App-link {
   color: #61dafb;
 }
