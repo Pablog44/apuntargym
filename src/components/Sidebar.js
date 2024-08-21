@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { auth } from '../firebase'; // Importa auth para cerrar sesión
 import './Sidebar.css';
 
 const Sidebar = () => {
   const [isExpanded, setIsExpanded] = useState(false);
+  const navigate = useNavigate(); // Necesario para redirigir después de cerrar sesión
 
   const toggleSidebar = () => {
     setIsExpanded(!isExpanded);
@@ -11,6 +13,17 @@ const Sidebar = () => {
 
   const closeSidebar = () => {
     setIsExpanded(false);
+  };
+
+  const handleLogout = () => {
+    auth.signOut()
+      .then(() => {
+        // Redirigir a la página de inicio de sesión después de cerrar sesión
+        navigate('/');
+      })
+      .catch((error) => {
+        console.error('Error al cerrar sesión:', error);
+      });
   };
 
   return (
@@ -40,7 +53,7 @@ const Sidebar = () => {
         </nav>
         {/* Botón de cerrar sesión, que siempre está al final */}
         <div className="logout-container">
-          <button onClick={() => alert('Cerrar sesión')}>Cerrar Sesión</button>
+          <button onClick={handleLogout}>Cerrar Sesión</button>
         </div>
       </div>
     </div>
