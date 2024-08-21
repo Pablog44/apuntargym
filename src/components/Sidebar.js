@@ -41,6 +41,7 @@ const Sidebar = () => {
             <line x1="6" y1="6" x2="18" y2="18" stroke="currentColor" strokeWidth="2" />
           </svg>
         </button>
+        <img src={`${process.env.PUBLIC_URL}/logo192.png`} alt="Logo" className="login-logo" />
         <nav className="sidebar-nav" onClick={closeSidebar}>
           <Link to="/registrar">Registrar</Link>
           <Link to="/historial">Ver Historial</Link>
