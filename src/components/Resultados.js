@@ -79,7 +79,7 @@ function Resultados() {
   return (
     <div className="resultados-container card-container">
       <header>
-        <h1 className="resultados-title">Historial de Ejercicios</h1>
+        <h1 className="resultados-title">Resultados</h1>
       </header>
       <main>
         <section id="filter-section" className="form-container">
