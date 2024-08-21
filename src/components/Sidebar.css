@@ -1,7 +1,7 @@
 /* Estilos generales para la barra lateral */
 .sidebar {
   width: 250px; /* Ancho fijo de la barra lateral */
-  background-color: #555;
+  background-color: #d2d2d2;
   color: white;
   height: 100vh;
   position: fixed;
@@ -24,7 +24,7 @@
 .sidebar .sidebar-nav a,
 .sidebar .sidebar-nav button {
   text-decoration: none;
-  color: white;
+  color: #999;
   padding: 10px;
   border-radius: 4px;
   transition: background-color 0.2s ease;
@@ -34,12 +34,13 @@
 
 .sidebar .sidebar-nav a:hover,
 .sidebar .sidebar-nav button:hover {
-  background-color: #666;
+  background-color: #eeeeee;
 }
 
 .sidebar .sidebar-nav button {
   background-color: #dc3545;
   border: none;
+  color: white;
 }
 
 .sidebar .sidebar-nav button:hover {
