@@ -76,7 +76,7 @@
 @media (max-width: 768px) {
     .resultados-container {
         padding: 15px;
-        margin: 20px 10px 0; /* Asegura que haya un margen lateral y no se desborde */
+        margin: 0px 10px 0; /* Asegura que haya un margen lateral y no se desborde */
         width: calc(100% - 20px); /* Mantiene el contenedor dentro de los límites de la pantalla */
     }
 }

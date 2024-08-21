@@ -52,21 +52,34 @@
 .logout-container {
   margin-top: auto; /* Mueve el botón hacia abajo ocupando todo el espacio disponible */
   margin-bottom: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .logout-container button {
-  width: 100%; /* Ocupa todo el ancho */
+  width: 60px; /* Ancho fijo para el botón circular */
+  height: 60px; /* Alto fijo para el botón circular */
   background-color: #dc3545;
-  padding: 10px;
   border: none;
-  border-radius: 4px;
+  border-radius: 50%; /* Hace que el botón sea un círculo */
   color: white;
-  font-size: 1rem;
+  font-size: 0; /* Oculta el texto del botón */
   cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: background-color 0.3s ease;
 }
 
 .logout-container button:hover {
   background-color: #c82333;
+}
+
+.logout-container button svg {
+  width: 30px;
+  height: 30px;
+  fill: white; /* Color del ícono SVG */
 }
 
 /* Estilo del ícono de hamburguesa en móviles */
