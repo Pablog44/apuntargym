@@ -4,6 +4,7 @@ import { collection, getDocs, doc, deleteDoc, query, where } from 'firebase/fire
 import { useNavigate } from 'react-router-dom';
 import '../Styles.css';
 import './Ajustes.css'; // Importa los estilos específicos de Ajustes
+import ExcelExport from './excel'
 
 function Ajustes() {
   const [muscleGroups, setMuscleGroups] = useState([]);
@@ -152,6 +153,7 @@ function Ajustes() {
         <h1 className="ajustes-title">Ajuste de Ejercicios</h1>
       </header>
       <main>
+      <ExcelExport />
         <section id="delete-section" className="form-container">
           <h2>Eliminar Grupos/Ejercicios</h2>
           <label htmlFor="muscle-group">Grupo Muscular:</label>
