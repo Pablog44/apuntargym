@@ -51,7 +51,7 @@
 /* Contenedor para el botón de cerrar sesión en la parte inferior */
 .logout-container {
   margin-top: auto; /* Mueve el botón hacia abajo ocupando todo el espacio disponible */
-  margin-bottom: 15px;
+  margin-bottom: 40px;
 }
 
 .logout-container button {
