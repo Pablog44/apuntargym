@@ -32,10 +32,10 @@ body, html, #root {
     margin-left: 250px;
     width: calc(100% - 250px);
     padding: 20px;
+    overflow: auto; /* Asegura que se pueda hacer scroll si el contenido es grande */
     display: flex;
-    justify-content: center;
-    align-items: center;
-    overflow-y: auto;
+    flex-direction: column; /* Organiza el contenido en columna */
+    align-items: center; /* Centra el contenido horizontalmente */
   }
   
   /* Reutilización para formularios */
@@ -105,7 +105,7 @@ body, html, #root {
       width: 100%; /* El contenido ocupa todo el ancho */
       padding: 10px;
       display: flex;
-      justify-content: center; /* Centra horizontalmente el contenido */
+      flex-direction: column;  /* Centra horizontalmente el contenido */
       align-items: center; /* Centra verticalmente el contenido */
     }
   }
