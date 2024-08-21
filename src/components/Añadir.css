@@ -34,7 +34,7 @@
     .form-container button {
         padding: 10px 15px;
         font-size: 1rem;
-        background-color: #007bff;
+        background-color: #777;
         color: white;
         border: none;
         border-radius: 5px;
@@ -43,6 +43,6 @@
     }
     
     .form-container button:hover {
-        background-color: #0056b3;
+        background-color: #999;
     }
     
