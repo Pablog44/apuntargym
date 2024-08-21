@@ -66,7 +66,6 @@ function Historial() {
       </header>
       <main>
         <section id="records-section">
-          <h2 className="records-section-title">Historial de Ejercicios</h2>
           <ul className="records-list">
             {exerciseRecords.map((record) => {
               const formattedDateTime = new Date(record.dateTime).toLocaleString('es-ES', {
@@ -84,11 +83,21 @@ function Historial() {
                   </div>
                   <button
                     className="delete-button"
-                    onClick={() =>
-                      confirmDeleteRecord(record.id, record.muscleGroup, record.exercise)
-                    }
+                    onClick={() => confirmDeleteRecord(record.id, record.muscleGroup, record.exercise)}
                   >
-                    Eliminar
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      className="trash-icon"
+                    >
+                      <polyline points="3 6 5 6 21 6" />
+                      <path d="M19 6L17.5 18a2 2 0 01-2 1.8H8.5a2 2 0 01-2-1.8L5 6m4-3h6a2 2 0 012 2v1H7V5a2 2 0 012-2z" />
+                    </svg>
                   </button>
                 </li>
               );
