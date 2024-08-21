@@ -5,8 +5,9 @@ import Dashboard from './components/Dashboard';
 import Historial from './components/Historial';
 import Ajustes from './components/Ajustes';
 import Añadir from './components/Añadir';
-import Resultados from './components/Resultados'; // Importa el nuevo componente
+import Resultados from './components/Resultados';
 import Layout from './components/Layout';
+import ProtectedRoute from './components/ProtectedRoute';
 import './Styles.css';
 
 function App() {
@@ -18,11 +19,46 @@ function App() {
 
         {/* Rutas dentro del layout con la barra lateral */}
         <Route element={<Layout />}>
-          <Route path="/registrar" element={<Dashboard />} />
-          <Route path="/historial" element={<Historial />} />
-          <Route path="/resultados" element={<Resultados />} /> {/* Nueva ruta */}
-          <Route path="/añadir" element={<Añadir />} /> 
-          <Route path="/ajustes" element={<Ajustes />} /> 
+          <Route
+            path="/registrar"
+            element={
+              <ProtectedRoute>
+                <Dashboard />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/historial"
+            element={
+              <ProtectedRoute>
+                <Historial />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/resultados"
+            element={
+              <ProtectedRoute>
+                <Resultados />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/añadir"
+            element={
+              <ProtectedRoute>
+                <Añadir />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/ajustes"
+            element={
+              <ProtectedRoute>
+                <Ajustes />
+              </ProtectedRoute>
+            }
+          />
         </Route>
       </Routes>
     </Router>
