@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.css": "/apuntargym/static/css/main.9a49dc0b.css",
-    "main.js": "/apuntargym/static/js/main.127722c7.js",
+    "main.css": "/apuntargym/static/css/main.033d18ec.css",
+    "main.js": "/apuntargym/static/js/main.326d0412.js",
     "static/js/453.9db0483a.chunk.js": "/apuntargym/static/js/453.9db0483a.chunk.js",
     "index.html": "/apuntargym/index.html",
-    "main.9a49dc0b.css.map": "/apuntargym/static/css/main.9a49dc0b.css.map",
-    "main.127722c7.js.map": "/apuntargym/static/js/main.127722c7.js.map",
+    "main.033d18ec.css.map": "/apuntargym/static/css/main.033d18ec.css.map",
+    "main.326d0412.js.map": "/apuntargym/static/js/main.326d0412.js.map",
     "453.9db0483a.chunk.js.map": "/apuntargym/static/js/453.9db0483a.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.9a49dc0b.css",
-    "static/js/main.127722c7.js"
+    "static/css/main.033d18ec.css",
+    "static/js/main.326d0412.js"
   ]
 }
