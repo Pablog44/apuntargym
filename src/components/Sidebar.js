@@ -37,8 +37,11 @@ const Sidebar = () => {
           <Link to="/ajustes">Ajustes</Link>
           <Link to="/resultados">Resultados</Link>
           <Link to="/añadir">Añadir Grupos/Ejercicios</Link>
-          <button onClick={() => alert('Cerrar sesión')}>Cerrar Sesión</button>
         </nav>
+        {/* Botón de cerrar sesión, que siempre está al final */}
+        <div className="logout-container">
+          <button onClick={() => alert('Cerrar sesión')}>Cerrar Sesión</button>
+        </div>
       </div>
     </div>
   );
