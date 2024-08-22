@@ -6,6 +6,7 @@ html, body, #root {
   width: 100%;
   font-family: 'Roboto', sans-serif;
   background-color: #f0f0f0; /* Color de fondo en modo claro */
+  min-height: 100vh; /* Asegura que el fondo cubra todo el viewport */
 }
 
 /* Modo oscuro */
