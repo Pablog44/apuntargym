@@ -156,11 +156,11 @@ function Ajustes() {
         <h1 className="ajustes-title">Ajustes</h1>
       </header>
       <main>
-      <button onClick={toggleTheme} className="theme-toggle-button">
-          Cambiar a {isDarkMode ? 'Modo Claro' : 'Modo Oscuro'}
-        </button>
-      <ExcelExport />
         <section id="delete-section" className="form-container">
+          <button onClick={toggleTheme} className="theme-toggle-button">
+            Cambiar a {isDarkMode ? 'Modo Claro' : 'Modo Oscuro'}
+          </button>
+        <ExcelExport />
           <h2>Eliminar Grupos/Ejercicios</h2>
           <label htmlFor="muscle-group">Grupo Muscular:</label>
           <select

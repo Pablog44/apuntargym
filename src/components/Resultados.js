@@ -84,7 +84,7 @@ function Resultados() {
   return (
     <div className="resultados-container card-container">
       <h1 className="resultados-title">Resultados</h1>
-      
+      <div className="form-container">
       <label htmlFor="filter-muscle-group">Grupo Muscular:</label>
       <select
         id="filter-muscle-group"
@@ -131,7 +131,7 @@ function Resultados() {
         <option value="repetitions">Repeticiones</option>
         <option value="dateTime">Fecha</option>
       </select>
-
+</div>
       <ul className="results-list">
         {filteredRecords.length === 0 ? (
           <li className="no-results">No se encontraron resultados.</li>
