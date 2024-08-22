@@ -64,11 +64,16 @@ body {
 .login-logo {
   width: 100px; /* Ajusta el tamaño según sea necesario */
   margin-top: 20px; /* Espacio debajo de la imagen */
+  left: 50%; /* Coloca la "X" en el centro horizontal */
+  transform: translateX(-50%) translateX(10px); /* Centra la "X" completamente */
 }
 .App-link {
   color: #61dafb;
 }
-
+@media (max-width: 768px) {
+  .login-logo {
+    transform: translateX(-50%) translateX(35px);
+  }}
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);
