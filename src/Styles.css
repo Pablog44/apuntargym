@@ -103,6 +103,10 @@ body, html, #root {
   color: #e0e0e0;
 }
 
+.dark-mode body, .dark-mode html, .dark-mode #root {
+  background-color: #444;
+}
+
 /* Modo oscuro para la barra lateral */
 .dark-mode .sidebar {
   background-color: #333;
