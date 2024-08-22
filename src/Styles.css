@@ -1,123 +1,106 @@
 /* Estilo general */
-body, html, #root {
-    margin: 0;
-    padding: 0;
-    height: 100%;
-    width: 100%;
-    font-family: 'Roboto', sans-serif;
-    background-color: #f0f0f0;
-  }
-  
-  /* Contenedor principal del layout */
-  .app-container {
-    display: flex;
-    height: 100vh;
-  }
-  
-  /* Barra lateral */
-  .sidebar {
-    width: 250px;
-    background-color: #333;
-    color: white;
-    height: 100vh;
-    position: fixed;
-    top: 0;
-    left: 0;
-    padding: 15px;
-    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2);
-  }
-  
-  /* Contenido principal */
-  .main-content {
-    margin-left: 250px;
-    width: calc(100% - 250px);
-    padding: 20px;
-    overflow: auto; /* Asegura que se pueda hacer scroll si el contenido es grande */
-    display: flex;
-    flex-direction: column; /* Organiza el contenido en columna */
-    align-items: center; /* Centra el contenido horizontalmente */
-  }
-  
-  /* Reutilización para formularios */
-  .form-container {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-  }
-  
-  .form-container label {
-    font-weight: bold;
-    color: #333;
-  }
-  
-  .form-container select,
-  .form-container input[type="number"],
-  .form-container input[type="datetime-local"] {
-    padding: 10px;
-    border-radius: 5px;
-    border: 1px solid #ddd;
-    font-size: 1rem;
-    width: 100%;
-    box-sizing: border-box;
-  }
-  
-  .form-container select:focus,
-  .form-container input:focus {
-    outline: none;
-    border-color: #666;
-  }
-  
-  .form-container button {
-    padding: 10px 15px;
-    font-size: 1rem;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-  
-  .save-button {
-    padding: 12px;
-    background-color: #666;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 1rem;
-    transition: background-color 0.3s;
-  }
-  
-  .save-button:hover {
-    background-color: #888;
-  }
-  
-  /* Estilos reutilizables */
-  .card-container {
-    background-color: white;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    margin: 0 auto;
-  }
-  /* Modo oscuro */
-.dark-mode {
-  background-color: #121212;
-  color: #e0e0e0;
-}
-
-.dark-mode body, .dark-mode html, .dark-mode #root {
+html, body, #root {
   margin: 0;
   padding: 0;
   height: 100%;
   width: 100%;
-  background-color: #444;
+  font-family: 'Roboto', sans-serif;
+  background-color: #f0f0f0; /* Color de fondo en modo claro */
 }
 
-/* Modo oscuro para la barra lateral */
+/* Modo oscuro */
+.dark-mode html, 
+.dark-mode body, 
+.dark-mode #root {
+  background-color: #121212; /* Fondo oscuro consistente */
+  color: #e0e0e0;
+}
+
+/* Contenedor principal del layout */
+.app-container {
+  display: flex;
+  height: 100vh;
+}
+
+/* Barra lateral */
+.sidebar {
+  width: 250px;
+  background-color: #333;
+  color: white;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  padding: 15px;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2);
+}
+
 .dark-mode .sidebar {
   background-color: #333;
   color: #ccc;
 }
 
-/* Modo oscuro para formularios y botones */
+/* Contenido principal */
+.main-content {
+  margin-left: 250px;
+  width: calc(100% - 250px);
+  padding: 20px;
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Reutilización para formularios */
+.form-container {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.form-container label {
+  font-weight: bold;
+  color: #333;
+}
+
+.form-container select,
+.form-container input[type="number"],
+.form-container input[type="datetime-local"] {
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #ddd;
+  font-size: 1rem;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.form-container select:focus,
+.form-container input:focus {
+  outline: none;
+  border-color: #666;
+}
+
+/* Estilo para botones */
+.form-container button,
+.save-button,
+.theme-toggle-button {
+  padding: 10px 15px;
+  font-size: 1rem;
+  border-radius: 5px;
+  cursor: pointer;
+  background-color: #666;
+  color: white;
+  border: none;
+  transition: background-color 0.3s;
+}
+
+.form-container button:hover,
+.save-button:hover,
+.theme-toggle-button:hover {
+  background-color: #888;
+}
+
+/* Estilos para el modo oscuro en formularios */
 .dark-mode .form-container input,
 .dark-mode .form-container select,
 .dark-mode .form-container button {
@@ -130,21 +113,28 @@ body, html, #root {
   background-color: #444;
 }
 
-/* Modo oscuro para las tarjetas */
+/* Estilos reutilizables */
+.card-container {
+  background-color: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  margin: 0 auto;
+}
+
 .dark-mode .card-container {
   background-color: #1e1e1e;
   color: #ccc;
 }
 
-  
-  /* Ajustes para dispositivos móviles */
-  @media (max-width: 768px) {
-    .main-content {
-      margin-left: 0; /* Elimina el espacio reservado para la barra lateral en móviles */
-      width: 100%; /* El contenido ocupa todo el ancho */
-      padding: 10px;
-      display: flex;
-      flex-direction: column;  /* Centra horizontalmente el contenido */
-      align-items: center; /* Centra verticalmente el contenido */
-    }
+/* Ajustes para dispositivos móviles */
+@media (max-width: 768px) {
+  .main-content {
+    margin-left: 0;
+    width: 100%;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
   }
+}

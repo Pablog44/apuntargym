@@ -13,8 +13,7 @@ export const ThemeProvider = ({ children }) => {
   useEffect(() => {
     // Almacena el tema seleccionado en localStorage
     localStorage.setItem('theme', isDarkMode ? 'dark' : 'light');
-    // Cambia la clase del body para aplicar los estilos correctos
-    document.body.className = isDarkMode ? 'dark-mode' : '';
+    document.documentElement.className = isDarkMode ? 'dark-mode' : ''; // Aplica la clase a todo el documento
   }, [isDarkMode]);
 
   const toggleTheme = () => {
