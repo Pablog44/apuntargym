@@ -8,60 +8,63 @@ import Añadir from './components/Añadir';
 import Resultados from './components/Resultados';
 import Layout from './components/Layout';
 import ProtectedRoute from './components/ProtectedRoute';
+import { ThemeProvider } from './components/ThemeContext'; // Importa el proveedor del tema
 import './Styles.css';
 
 function App() {
   return (
-    <Router>
-      <Routes>
-        {/* Ruta de login, fuera del layout */}
-        <Route path="/" element={<Login />} />
+    <ThemeProvider>
+      <Router>
+        <Routes>
+          {/* Ruta de login, fuera del layout */}
+          <Route path="/" element={<Login />} />
 
-        {/* Rutas dentro del layout con la barra lateral */}
-        <Route element={<Layout />}>
-          <Route
-            path="/registrar"
-            element={
-              <ProtectedRoute>
-                <Dashboard />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/historial"
-            element={
-              <ProtectedRoute>
-                <Historial />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/resultados"
-            element={
-              <ProtectedRoute>
-                <Resultados />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/añadir"
-            element={
-              <ProtectedRoute>
-                <Añadir />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/ajustes"
-            element={
-              <ProtectedRoute>
-                <Ajustes />
-              </ProtectedRoute>
-            }
-          />
-        </Route>
-      </Routes>
-    </Router>
+          {/* Rutas dentro del layout con la barra lateral */}
+          <Route element={<Layout />}>
+            <Route
+              path="/registrar"
+              element={
+                <ProtectedRoute>
+                  <Dashboard />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/historial"
+              element={
+                <ProtectedRoute>
+                  <Historial />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/resultados"
+              element={
+                <ProtectedRoute>
+                  <Resultados />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/añadir"
+              element={
+                <ProtectedRoute>
+                  <Añadir />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/ajustes"
+              element={
+                <ProtectedRoute>
+                  <Ajustes />
+                </ProtectedRoute>
+              }
+            />
+          </Route>
+        </Routes>
+      </Router>
+    </ThemeProvider>
   );
 }
 

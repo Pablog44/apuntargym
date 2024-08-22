@@ -97,6 +97,37 @@ body, html, #root {
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     margin: 0 auto;
   }
+  /* Modo oscuro */
+.dark-mode {
+  background-color: #121212;
+  color: #e0e0e0;
+}
+
+/* Modo oscuro para la barra lateral */
+.dark-mode .sidebar {
+  background-color: #333;
+  color: #ccc;
+}
+
+/* Modo oscuro para formularios y botones */
+.dark-mode .form-container input,
+.dark-mode .form-container select,
+.dark-mode .form-container button {
+  background-color: #2e2e2e;
+  color: #e0e0e0;
+  border-color: #444;
+}
+
+.dark-mode .save-button {
+  background-color: #444;
+}
+
+/* Modo oscuro para las tarjetas */
+.dark-mode .card-container {
+  background-color: #1e1e1e;
+  color: #ccc;
+}
+
   
   /* Ajustes para dispositivos móviles */
   @media (max-width: 768px) {
@@ -109,4 +140,3 @@ body, html, #root {
       align-items: center; /* Centra verticalmente el contenido */
     }
   }
-  

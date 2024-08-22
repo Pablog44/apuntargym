@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import '../Styles.css';
 import './Ajustes.css'; // Importa los estilos específicos de Ajustes
 import ExcelExport from './excel'
+import { useTheme } from './ThemeContext';
 
 function Ajustes() {
   const [muscleGroups, setMuscleGroups] = useState([]);
@@ -14,6 +15,7 @@ function Ajustes() {
   const [currentUser, setCurrentUser] = useState(null);
   const navigate = useNavigate();
   const [debugInfo, setDebugInfo] = useState('');
+  const { isDarkMode, toggleTheme } = useTheme();
 
   useEffect(() => {
     auth.onAuthStateChanged((user) => {
@@ -147,12 +149,16 @@ function Ajustes() {
     }
   }, [selectedMuscleGroup, updateExerciseOptions]);
 
+
   return (
     <div className="ajustes-container card-container">
       <header>
-        <h1 className="ajustes-title">Ajuste de Ejercicios</h1>
+        <h1 className="ajustes-title">Ajustes</h1>
       </header>
       <main>
+      <button onClick={toggleTheme} className="theme-toggle-button">
+          Cambiar a {isDarkMode ? 'Modo Claro' : 'Modo Oscuro'}
+        </button>
       <ExcelExport />
         <section id="delete-section" className="form-container">
           <h2>Eliminar Grupos/Ejercicios</h2>
