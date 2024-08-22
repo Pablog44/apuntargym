@@ -36,7 +36,7 @@
 
 .record-muscle-group {
     font-weight: bold;
-    color: #333;
+    color: #444;
 }
 
 .record-exercise {
@@ -54,18 +54,18 @@
     width: 25px;
     height: 25px;
     border-radius: 50%;
-    background-color: #777;
+    background-color: #888;
     transition: background-color 0.3s ease;
     flex-shrink: 0;
   }
   
   .delete-button:hover {
-    background-color: #999;
+    background-color: #b4b4b4;
   }
   
   .trash-icon {
     width: 15px;
     height: 15px;
-    color: #fff;
+    color: #555;
     stroke-width: 2.5;
   }
