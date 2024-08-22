@@ -37,8 +37,12 @@ html, body, #root {
 }
 
 .dark-mode .sidebar {
-  background-color: #333;
+  background-color: #222;
   color: #ccc;
+}
+.dark-mode .sidebar.expanded {
+  background-color: #222;
+  color: #999;
 }
 
 /* Contenido principal */
