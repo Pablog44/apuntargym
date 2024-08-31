@@ -40,6 +40,7 @@ html, body, #root {
   background-color: #222;
   color: #ccc;
 }
+
 .dark-mode .sidebar.expanded {
   background-color: #222;
   color: #999;
@@ -119,6 +120,8 @@ html, body, #root {
   background-color: #2e2e2e; /* Fondo del select en modo oscuro */
   color: #e0e0e0; /* Color del texto del select */
   border: 1px solid #444; /* Borde del select */
+  appearance: none; /* Elimina la apariencia por defecto en la mayoría de navegadores */
+  -webkit-appearance: none; /* Elimina la apariencia por defecto en Safari y Chrome */
 }
 
 .dark-mode select option {
@@ -160,9 +163,16 @@ html, body, #root {
     background-color: #2e2e2e;
     color: #e0e0e0;
     border-color: #444;
+    appearance: none; /* Elimina la apariencia por defecto en la mayoría de navegadores */
+    -webkit-appearance: none; /* Elimina la apariencia por defecto en Safari y Chrome */
   }
 
   .dark-mode .form-container select:focus {
     border-color: #666;
+  }
+
+  .dark-mode .form-container select option {
+    background-color: #2e2e2e;
+    color: #e0e0e0;
   }
 }
