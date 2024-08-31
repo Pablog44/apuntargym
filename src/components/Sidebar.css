@@ -57,14 +57,14 @@
   justify-content: center;
   align-items: center;
 }
-.logout-circle
-{
+
+.logout-circle {
   color: #888;
-  margin-left:10px;
+  margin-left: 10px;
 }
-.logout-circle svg:hover
-{
-  color:#444;
+
+.logout-circle svg:hover {
+  color: #444;
   cursor: pointer;
 }
 
@@ -84,7 +84,7 @@
   display: none; /* Oculto por defecto */
 }
 
-.login-logo{
+.login-logo {
   margin-left: 70px;
 }
 
@@ -127,10 +127,10 @@
     flex-direction: column;
   }
 
-  .login-logo{
+  .login-logo {
     margin-left: 20px;
   }
-  
+
   .sidebar.expanded .sidebar-nav {
     gap: 20px;
     margin-top: 30px;
@@ -141,6 +141,13 @@
   .sidebar.expanded .sidebar-nav a,
   .sidebar.expanded .sidebar-nav button {
     font-size: 1.5rem;
+    border: 1px solid #eeeeee; /* Borde gris muy claro */
+  }
+
+  .sidebar.expanded .sidebar-nav a:active,
+  .sidebar.expanded .sidebar-nav button:active {
+    background-color: #eeeeee; /* Fondo gris muy claro al pulsarse */
+    color: #333; /* Cambia el color del texto al pulsarse */
   }
 
   .close-button {

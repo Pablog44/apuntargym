@@ -109,9 +109,21 @@ html, body, #root {
 .dark-mode .form-container input,
 .dark-mode .form-container select,
 .dark-mode .form-container button {
-  background-color: #2e2e2e;
-  color: #e0e0e0;
-  border-color: #444;
+  background-color: #2e2e2e; /* Fondo oscuro */
+  color: #e0e0e0; /* Texto claro */
+  border-color: #444; /* Borde oscuro */
+}
+
+/* Estilos para el modo oscuro en los desplegables (select) */
+.dark-mode select {
+  background-color: #2e2e2e; /* Fondo del select en modo oscuro */
+  color: #e0e0e0; /* Color del texto del select */
+  border: 1px solid #444; /* Borde del select */
+}
+
+.dark-mode select option {
+  background-color: #2e2e2e; /* Fondo de las opciones en modo oscuro */
+  color: #e0e0e0; /* Color del texto de las opciones */
 }
 
 .dark-mode .save-button {
@@ -141,5 +153,16 @@ html, body, #root {
     display: flex;
     flex-direction: column;
     align-items: center;
+  }
+
+  /* Asegura el estilo oscuro en select para dispositivos móviles */
+  .dark-mode .form-container select {
+    background-color: #2e2e2e;
+    color: #e0e0e0;
+    border-color: #444;
+  }
+
+  .dark-mode .form-container select:focus {
+    border-color: #666;
   }
 }
