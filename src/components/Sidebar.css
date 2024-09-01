@@ -142,6 +142,8 @@
   .sidebar.expanded .sidebar-nav button {
     font-size: 1.5rem;
     border: 1px solid #eeeeee; /* Borde gris muy claro */
+    border-radius: 50px; /* Ajusta el valor para más o menos redondez */
+
   }
 
   .sidebar.expanded .sidebar-nav a:active,
