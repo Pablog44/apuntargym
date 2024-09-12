@@ -43,23 +43,43 @@ function Ajustes() {
       // Agregar grupos musculares predeterminados si tienen ejercicios personalizados
       userExercisesSnapshot.forEach((doc) => {
         const muscleGroup = doc.data().muscleGroup;
-        if (!groups.find((group) => group.id === muscleGroup)) {
+        // Evitar agregar duplicados, manteniendo el último en caso de duplicación
+        const groupIndex = groups.findIndex((group) => group.id === muscleGroup);
+        if (groupIndex === -1) {
           groups.push({
             id: muscleGroup,
             isCustom: false,
           });
+        } else {
+          groups[groupIndex] = {
+            id: muscleGroup,
+            isCustom: false,
+          }; // Reemplaza con el último que encuentre
         }
       });
 
       // Agregar grupos musculares personalizados del usuario
       userMuscleGroupsSnapshot.forEach((doc) => {
-        groups.push({
-          id: doc.id.replace('Personalizado-', ''),
-          isCustom: true,
-        });
+        const muscleGroupId = doc.id.replace('Personalizado-', '');
+        const groupIndex = groups.findIndex((group) => group.id === muscleGroupId);
+        if (groupIndex === -1) {
+          groups.push({
+            id: muscleGroupId,
+            isCustom: true,
+          });
+        } else {
+          groups[groupIndex] = {
+            id: muscleGroupId,
+            isCustom: true,
+          }; // Reemplaza con el último que encuentre
+        }
       });
 
-      setMuscleGroups(groups);
+      // Eliminar duplicados y mantener el último duplicado (el que sale más abajo)
+      const uniqueGroups = Array.from(new Set(groups.map((group) => group.id)))
+        .map((id) => groups[groups.map((group) => group.id).lastIndexOf(id)]);
+
+      setMuscleGroups(uniqueGroups);
     } catch (error) {
       console.error('Error cargando grupos musculares:', error);
       setDebugInfo(`Error cargando grupos musculares: ${error}`);
@@ -160,7 +180,7 @@ function Ajustes() {
           <button onClick={toggleTheme} className="theme-toggle-button">
             Cambiar a {isDarkMode ? 'Modo Claro' : 'Modo Oscuro'}
           </button>
-        <ExcelExport />
+          <ExcelExport />
           <h2>Eliminar Grupos/Ejercicios</h2>
           <label htmlFor="muscle-group">Grupo Muscular:</label>
           <select
