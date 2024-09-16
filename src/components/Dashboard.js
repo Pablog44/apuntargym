@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useCallback } from 'react';
 import { auth, db } from '../firebase';
 import { collection, getDocs, doc, getDoc, addDoc, query, where } from 'firebase/firestore';
@@ -6,6 +5,7 @@ import { onAuthStateChanged } from 'firebase/auth';
 import { useNavigate } from 'react-router-dom';
 import '../Styles.css';
 import './Dashboard.css'; // Importa los estilos específicos de Dashboard
+import Dropdown from './Dropdown'; // Importa el componente Dropdown reutilizable
 
 function Dashboard() {
   const [muscleGroups, setMuscleGroups] = useState([]);
@@ -62,9 +62,9 @@ function Dashboard() {
     }
   }, [currentUser, loadMuscleGroups]);
 
-  const handleMuscleGroupChange = async (e) => {
-    setSelectedMuscleGroup(e.target.value);
-    loadExercises(e.target.value);
+  const handleMuscleGroupChange = async (value) => {
+    setSelectedMuscleGroup(value);
+    loadExercises(value);
   };
 
   const loadExercises = useCallback(async (muscleGroup) => {
@@ -133,32 +133,51 @@ function Dashboard() {
       <h1 className="dashboard-title">Registro de Ejercicios</h1>
       <div className="form-container">
         <label htmlFor="muscle-group">Grupo Muscular:</label>
-        <select id="muscle-group" value={selectedMuscleGroup} onChange={handleMuscleGroupChange}>
-          <option value="">Selecciona un grupo muscular</option>
-          {muscleGroups.map((group) => (
-            <option key={group.id} value={group.id}>
-              {group.id} {group.isCustom ? '(Personalizado)' : ''}
-            </option>
-          ))}
-        </select>
+        <Dropdown
+          options={muscleGroups.map((group) => group.id)}
+          selectedOption={selectedMuscleGroup}
+          onSelect={handleMuscleGroupChange}
+          placeholder="Selecciona un grupo muscular"
+        />
+
         <label htmlFor="exercise">Ejercicio:</label>
-        <select id="exercise" value={selectedExercise} onChange={(e) => setSelectedExercise(e.target.value)}>
-          <option value="">Selecciona un ejercicio</option>
-          {exercises.map((exercise) => (
-            <option key={exercise} value={exercise}>
-              {exercise}
-            </option>
-          ))}
-        </select>
+        <Dropdown
+          options={exercises}
+          selectedOption={selectedExercise}
+          onSelect={(value) => setSelectedExercise(value)}
+          placeholder="Selecciona un ejercicio"
+        />
+
         <label htmlFor="weight">Peso (kg):</label>
-        <input type="number" id="weight" value={weight} onChange={(e) => setWeight(e.target.value)} />
+        <input
+          type="number"
+          id="weight"
+          value={weight}
+          onChange={(e) => setWeight(e.target.value)}
+        />
+
         <label htmlFor="repetitions">Repeticiones:</label>
-        <input type="number" id="repetitions" value={repetitions} onChange={(e) => setRepetitions(e.target.value)} />
+        <input
+          type="number"
+          id="repetitions"
+          value={repetitions}
+          onChange={(e) => setRepetitions(e.target.value)}
+        />
+
         <label htmlFor="exercise-date">Fecha:</label>
-        <input type="datetime-local" id="exercise-date" value={exerciseDate} onChange={(e) => setExerciseDate(e.target.value)} />
-        <button className="save-button" onClick={handleSaveExercise}>Guardar Ejercicio</button>
+        <input
+          type="datetime-local"
+          id="exercise-date"
+          value={exerciseDate}
+          onChange={(e) => setExerciseDate(e.target.value)}
+        />
+
+        <button className="save-button" onClick={handleSaveExercise}>
+          Guardar Ejercicio
+        </button>
       </div>
     </div>
   );
 }
+
 export default Dashboard;

@@ -2,7 +2,8 @@
 .dropdown-backdrop {
   position: fixed;
   top: 0;
-  left: 0;
+  left: 0px;
+  margin: 20px;
   width: 100vw;
   height: 100vh;
   background: rgba(0, 0, 0, 0.5);
@@ -14,7 +15,8 @@
 
 /* Popup centrado */
 .dropdown-popup {
-  width: 75%;
+  width: calc(90% - 250px);
+  margin-left: 250px;
   height: 75%;
   background-color: white;
   border-radius: 8px;
@@ -75,4 +77,15 @@
   background-color: #2e2e2e;
   color: #e0e0e0;
   border-color: #444;
+}
+@media (max-width: 768px) {
+  .dropdown-popup{
+    margin-left: 0;
+    margin-right: 0;
+    width: 80%;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
 }

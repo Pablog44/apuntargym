@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useTheme } from './ThemeContext';
 import './Dropdown.css';
+import '../Styles.css';
 
 function Dropdown({ options, selectedOption, onSelect, placeholder }) {
   const [isOpen, setIsOpen] = useState(false);
