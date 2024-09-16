@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { db, auth } from '../firebase';
 import { collection, query, where, getDocs } from 'firebase/firestore';
 import { useNavigate } from 'react-router-dom';
+import Dropdown from './Dropdown'; // Importa el nuevo componente Dropdown
 import '../Styles.css';
 import './Resultados.css';
 
@@ -12,6 +13,21 @@ function Resultados() {
   const [selectedExercise, setSelectedExercise] = useState('');
   const [sortCriteria, setSortCriteria] = useState('dateTime');
   const navigate = useNavigate();
+
+  // Mapa de traducción de criterios de ordenación
+  const criteriaMap = {
+    weight: 'Peso',
+    repetitions: 'Repeticiones',
+    dateTime: 'Fecha',
+    PR: 'PR'
+  };
+
+  const reverseCriteriaMap = {
+    Peso: 'weight',
+    Repeticiones: 'repetitions',
+    Fecha: 'dateTime',
+    PR: 'PR'
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -99,53 +115,40 @@ function Resultados() {
     <div className="resultados-container card-container">
       <h1 className="resultados-title">Resultados</h1>
       <div className="form-container">
+
         <label htmlFor="filter-muscle-group">Grupo Muscular:</label>
-        <select
-          id="filter-muscle-group"
-          value={selectedGroup}
-          onChange={(e) => setSelectedGroup(e.target.value)}
-        >
-          <option value="">Todos</option>
-          {[...new Set(exerciseRecords.map((record) => record.muscleGroup))].map((group) => (
-            <option key={group} value={group}>
-              {group}
-            </option>
-          ))}
-        </select>
+        <Dropdown
+          options={[...new Set(exerciseRecords.map((record) => record.muscleGroup))]}
+          selectedOption={selectedGroup}
+          onSelect={setSelectedGroup}
+          placeholder="Todos"
+        />
 
         <label htmlFor="filter-exercise">Ejercicio:</label>
-        <select
-          id="filter-exercise"
-          value={selectedExercise}
-          onChange={(e) => setSelectedExercise(e.target.value)}
-          disabled={!selectedGroup}
-        >
-          <option value="">Todos</option>
-          {exerciseRecords
+        <Dropdown
+          options={exerciseRecords
             .filter((record) => record.muscleGroup === selectedGroup)
             .map((record) => record.exercise)
-            .filter((exercise, index, self) => self.indexOf(exercise) === index)
-            .map((exercise) => (
-              <option key={exercise} value={exercise}>
-                {exercise}
-              </option>
-            ))}
-        </select>
+            .filter((exercise, index, self) => self.indexOf(exercise) === index)}
+          selectedOption={selectedExercise}
+          onSelect={setSelectedExercise}
+          placeholder="Todos"
+        />
 
         <button className="apply-button" onClick={applyFilters}>Aplicar Filtros</button>
 
         <h2>Ordenar Resultados</h2>
         <label htmlFor="sort-criteria">Criterio:</label>
-        <select
-          id="sort-criteria"
-          value={sortCriteria}
-          onChange={(e) => setSortCriteria(e.target.value)}
-        >
-          <option value="weight">Peso</option>
-          <option value="repetitions">Repeticiones</option>
-          <option value="dateTime">Fecha</option>
-          <option value="PR">PR</option> {/* Nueva opción añadida */}
-        </select>
+        <Dropdown
+          options={['Peso', 'Repeticiones', 'Fecha', 'PR']}
+          selectedOption={criteriaMap[sortCriteria]} // Mostramos la opción en español
+          onSelect={(option) => {
+            // Traducir opción seleccionada de español a la clave utilizada
+            const translatedCriteria = reverseCriteriaMap[option];
+            setSortCriteria(translatedCriteria);
+          }}
+          placeholder="Peso"
+        />
       </div>
       <ul className="results-list">
         {filteredRecords.length === 0 ? (
