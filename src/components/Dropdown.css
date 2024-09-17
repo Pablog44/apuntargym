@@ -10,7 +10,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 999;
+  z-index: 999; /* Asegúrate de que tenga un valor alto */
 }
 
 /* Popup centrado */
@@ -19,16 +19,16 @@
   margin-left: 250px;
   height: 75%;
   background-color: white;
-  border-radius: 20px; /* Bordes más redondeados */
+  border-radius: 8px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
   position: relative;
   padding: 20px;
   overflow-y: auto;
-  z-index: 1000;
+  z-index: 1000; /* Asegúrate de que esté por encima del fondo */
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  justify-content: center; /* Centra el contenido verticalmente */
+  align-items: center; /* Centra el contenido horizontalmente */
 }
 
 /* Botón para cerrar el popup */
@@ -44,28 +44,19 @@
 .dropdown-options {
   margin-top: 20px;
   width: 100%;
-  max-height: 80%;
+  max-height: 70%; /* Controla la altura máxima de las opciones */
   overflow-y: auto;
-  display: flex;
-  flex-direction: column;
-  gap: 10px; /* Espaciado entre botones */
 }
 
-/* Botón con estilo similar al de Twitter */
 .dropdown-option {
-  padding: 10px 20px;
+  padding: 10px;
   cursor: pointer;
-  text-align: center;
-  background-color: #b6b6b6; /* Color azul de Twitter */
-  color: white;
-  border: 2px solid black;
-  border-radius: 9999px; /* Bordes completamente redondeados */
-  font-size: 16px;
-  transition: background-color 0.3s ease;
+  border-bottom: 1px solid #ccc;
+  text-align: center; /* Centra el texto de las opciones */
 }
 
 .dropdown-option:hover {
-  background-color: #0d8ddb; /* Color de hover para Twitter */
+  background-color: #f0f0f0;
 }
 
 /* Estilos para el modo oscuro */
@@ -75,22 +66,28 @@
 }
 
 .dark-mode .dropdown-option {
-  background-color: #444;
   color: #ccc;
 }
 
 .dark-mode .dropdown-option:hover {
-  background-color: #555;
+  background-color: #3e3e3e;
+}
+
+.dark-mode .dropdown-trigger {
+  background-color: #2e2e2e;
+  color: #ccc;
+  border-color: #444;
 }
 
 /* Ajustes para dispositivos móviles */
 @media (max-width: 768px) {
   .dropdown-popup {
-    width: 80%;
+    width: 80%; /* Asegura que el popup ocupe un buen porcentaje del ancho de pantalla en móviles */
     height: 75%;
     padding: 0px;
     margin-left: 0;
     margin-right: 7%;
+
   }
   .dropdown-backdrop {
     position: fixed;
@@ -102,6 +99,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 999;
+    z-index: 999; /* Asegúrate de que tenga un valor alto */
   }
+  
 }
