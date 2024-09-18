@@ -24,6 +24,10 @@
   transition: background-color 0.3s ease, transform 0.2s ease;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra ligera */
 }
+.dropdown-trigger.disabled {
+  cursor: not-allowed;
+  opacity: 0.6; /* Indica visualmente que está deshabilitado */
+}
 
 .dropdown-trigger:hover {
   background-color: #ccc; /* Azul más oscuro al hacer hover */
