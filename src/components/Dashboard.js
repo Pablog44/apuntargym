@@ -146,6 +146,7 @@ function Dashboard() {
           selectedOption={selectedExercise}
           onSelect={(value) => setSelectedExercise(value)}
           placeholder="Selecciona un ejercicio"
+          disabled={!selectedMuscleGroup} // Deshabilitar si no hay un grupo muscular seleccionado
         />
 
         <label htmlFor="weight">Peso (kg):</label>

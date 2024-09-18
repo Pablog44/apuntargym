@@ -3,13 +3,15 @@ import { useTheme } from './ThemeContext';
 import './Dropdown.css';
 import '../Styles.css';
 
-function Dropdown({ options, selectedOption, onSelect, placeholder }) {
+function Dropdown({ options, selectedOption, onSelect, placeholder, disabled }) {
   const [isOpen, setIsOpen] = useState(false);
   const { isDarkMode } = useTheme();
   const dropdownRef = useRef(null);
 
   const toggleDropdown = () => {
-    setIsOpen((prev) => !prev);
+    if (!disabled) {
+      setIsOpen((prev) => !prev);
+    }
   };
 
   const handleOptionClick = (option) => {
@@ -20,10 +22,7 @@ function Dropdown({ options, selectedOption, onSelect, placeholder }) {
   // Cierra el popup si se hace clic fuera
   useEffect(() => {
     const handleClickOutside = (event) => {
-      if (
-        dropdownRef.current &&
-        !dropdownRef.current.contains(event.target)
-      ) {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
         setIsOpen(false);
       }
     };
@@ -36,7 +35,7 @@ function Dropdown({ options, selectedOption, onSelect, placeholder }) {
   return (
     <>
       <div
-        className={`dropdown-trigger ${isDarkMode ? 'dark-mode' : ''}`}
+        className={`dropdown-trigger ${isDarkMode ? 'dark-mode' : ''} ${disabled ? 'disabled' : ''}`}
         onClick={toggleDropdown}
       >
         {selectedOption || placeholder || 'Selecciona una opción'}
