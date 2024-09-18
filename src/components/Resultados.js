@@ -133,6 +133,7 @@ function Resultados() {
           selectedOption={selectedExercise}
           onSelect={setSelectedExercise}
           placeholder="Todos"
+          disabled={!selectedGroup} 
         />
 
         <button className="apply-button" onClick={applyFilters}>Aplicar Filtros</button>
