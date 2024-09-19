@@ -43,6 +43,17 @@ function Resultados() {
     fetchData();
   }, [navigate]);
 
+  useEffect(() => {
+    // Cargar los filtros guardados de localStorage al cargar la página
+    const savedGroup = localStorage.getItem('selectedGroup');
+    const savedExercise = localStorage.getItem('selectedExercise');
+    const savedSortCriteria = localStorage.getItem('sortCriteria');
+
+    if (savedGroup) setSelectedGroup(savedGroup);
+    if (savedExercise) setSelectedExercise(savedExercise);
+    if (savedSortCriteria) setSortCriteria(savedSortCriteria);
+  }, []);
+
   const loadExerciseRecords = async (userId) => {
     const recordsQuery = query(
       collection(db, 'exerciseRecords'),
@@ -111,6 +122,20 @@ function Resultados() {
     applyFilters();
   }, [applyFilters]);
 
+  const handleFilterChange = (group, exercise) => {
+    setSelectedGroup(group);
+    setSelectedExercise(exercise);
+
+    // Guardar los filtros en localStorage
+    localStorage.setItem('selectedGroup', group);
+    localStorage.setItem('selectedExercise', exercise);
+  };
+
+  const handleSortChange = (criteria) => {
+    setSortCriteria(criteria);
+    localStorage.setItem('sortCriteria', criteria); // Guardar el criterio de ordenación en localStorage
+  };
+
   return (
     <div className="resultados-container card-container">
       <h1 className="resultados-title">Resultados</h1>
@@ -120,7 +145,7 @@ function Resultados() {
         <Dropdown
           options={[...new Set(exerciseRecords.map((record) => record.muscleGroup))]}
           selectedOption={selectedGroup}
-          onSelect={setSelectedGroup}
+          onSelect={(group) => handleFilterChange(group, selectedExercise)} // Actualizamos filtro y guardamos en localStorage
           placeholder="Todos"
         />
 
@@ -131,7 +156,7 @@ function Resultados() {
             .map((record) => record.exercise)
             .filter((exercise, index, self) => self.indexOf(exercise) === index)}
           selectedOption={selectedExercise}
-          onSelect={setSelectedExercise}
+          onSelect={(exercise) => handleFilterChange(selectedGroup, exercise)} // Actualizamos filtro y guardamos en localStorage
           placeholder="Todos"
           disabled={!selectedGroup} 
         />
@@ -146,7 +171,7 @@ function Resultados() {
           onSelect={(option) => {
             // Traducir opción seleccionada de español a la clave utilizada
             const translatedCriteria = reverseCriteriaMap[option];
-            setSortCriteria(translatedCriteria);
+            handleSortChange(translatedCriteria); // Actualizamos el criterio de ordenación y lo guardamos en localStorage
           }}
           placeholder="Peso"
         />

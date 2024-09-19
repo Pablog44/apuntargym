@@ -60,11 +60,24 @@ function Dashboard() {
     if (currentUser) {
       loadMuscleGroups();
     }
+
+    // Restaurar los valores guardados en localStorage
+    const savedGroup = localStorage.getItem('selectedGroup');
+    const savedExercise = localStorage.getItem('selectedExercise');
+
+    if (savedGroup) setSelectedMuscleGroup(savedGroup);
+    if (savedExercise) setSelectedExercise(savedExercise);
   }, [currentUser, loadMuscleGroups]);
 
   const handleMuscleGroupChange = async (value) => {
     setSelectedMuscleGroup(value);
+    localStorage.setItem('selectedGroup', value); // Guardar el grupo muscular en localStorage
     loadExercises(value);
+  };
+
+  const handleExerciseChange = (value) => {
+    setSelectedExercise(value);
+    localStorage.setItem('selectedExercise', value); // Guardar el ejercicio en localStorage
   };
 
   const loadExercises = useCallback(async (muscleGroup) => {
@@ -144,7 +157,7 @@ function Dashboard() {
         <Dropdown
           options={exercises}
           selectedOption={selectedExercise}
-          onSelect={(value) => setSelectedExercise(value)}
+          onSelect={handleExerciseChange}
           placeholder="Selecciona un ejercicio"
           disabled={!selectedMuscleGroup} // Deshabilitar si no hay un grupo muscular seleccionado
         />
