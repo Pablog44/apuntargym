@@ -71,7 +71,9 @@ function Dashboard() {
 
   const handleMuscleGroupChange = async (value) => {
     setSelectedMuscleGroup(value);
+    setSelectedExercise(''); // Restablecer la selección del ejercicio
     localStorage.setItem('selectedGroup', value); // Guardar el grupo muscular en localStorage
+    localStorage.removeItem('selectedExercise'); // Eliminar el ejercicio seleccionado de localStorage
     loadExercises(value);
   };
 

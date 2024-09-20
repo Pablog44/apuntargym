@@ -122,13 +122,11 @@ function Resultados() {
     applyFilters();
   }, [applyFilters]);
 
-  const handleFilterChange = (group, exercise) => {
+  const handleFilterChange = (group, exercise = '') => {
     setSelectedGroup(group);
-    setSelectedExercise(exercise);
-
-    // Guardar los filtros en localStorage
+    setSelectedExercise(exercise); // Restablecer el ejercicio cuando cambia el grupo muscular
     localStorage.setItem('selectedGroup', group);
-    localStorage.setItem('selectedExercise', exercise);
+    localStorage.removeItem('selectedExercise'); // Eliminar el ejercicio seleccionado de localStorage
   };
 
   const handleSortChange = (criteria) => {
