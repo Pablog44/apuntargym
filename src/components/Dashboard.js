@@ -42,46 +42,6 @@ function Dashboard() {
     setMuscleGroups(groups);
   }, [currentUser]);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      onAuthStateChanged(auth, (user) => {
-        if (!user) {
-          navigate('/');
-        } else {
-          setCurrentUser(user);
-        }
-      });
-    };
-
-    fetchData();
-  }, [navigate]);
-
-  useEffect(() => {
-    if (currentUser) {
-      loadMuscleGroups();
-    }
-
-    // Restaurar los valores guardados en localStorage
-    const savedGroup = localStorage.getItem('selectedGroup');
-    const savedExercise = localStorage.getItem('selectedExercise');
-
-    if (savedGroup) setSelectedMuscleGroup(savedGroup);
-    if (savedExercise) setSelectedExercise(savedExercise);
-  }, [currentUser, loadMuscleGroups]);
-
-  const handleMuscleGroupChange = async (value) => {
-    setSelectedMuscleGroup(value);
-    setSelectedExercise(''); // Restablecer la selección del ejercicio
-    localStorage.setItem('selectedGroup', value); // Guardar el grupo muscular en localStorage
-    localStorage.removeItem('selectedExercise'); // Eliminar el ejercicio seleccionado de localStorage
-    loadExercises(value);
-  };
-
-  const handleExerciseChange = (value) => {
-    setSelectedExercise(value);
-    localStorage.setItem('selectedExercise', value); // Guardar el ejercicio en localStorage
-  };
-
   const loadExercises = useCallback(async (muscleGroup) => {
     if (!currentUser) return;
 
@@ -122,6 +82,50 @@ function Dashboard() {
 
     setExercises(combinedExercises);
   }, [currentUser, muscleGroups]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      onAuthStateChanged(auth, (user) => {
+        if (!user) {
+          navigate('/');
+        } else {
+          setCurrentUser(user);
+        }
+      });
+    };
+
+    fetchData();
+  }, [navigate]);
+
+  useEffect(() => {
+    if (currentUser) {
+      loadMuscleGroups();
+    }
+
+    // Restaurar los valores guardados en localStorage
+    const savedGroup = localStorage.getItem('selectedGroup');
+    const savedExercise = localStorage.getItem('selectedExercise');
+
+    if (savedGroup) {
+      setSelectedMuscleGroup(savedGroup);
+      loadExercises(savedGroup); // Cargar los ejercicios cuando se restaura el grupo muscular
+    }
+
+    if (savedExercise) setSelectedExercise(savedExercise);
+  }, [currentUser, loadMuscleGroups, loadExercises]);
+
+  const handleMuscleGroupChange = async (value) => {
+    setSelectedMuscleGroup(value);
+    setSelectedExercise(''); // Restablecer la selección del ejercicio
+    localStorage.setItem('selectedGroup', value); // Guardar el grupo muscular en localStorage
+    localStorage.removeItem('selectedExercise'); // Eliminar el ejercicio seleccionado de localStorage
+    loadExercises(value);
+  };
+
+  const handleExerciseChange = (value) => {
+    setSelectedExercise(value);
+    localStorage.setItem('selectedExercise', value); // Guardar el ejercicio en localStorage
+  };
 
   const handleSaveExercise = async () => {
     if (currentUser && selectedMuscleGroup && selectedExercise && weight && repetitions) {
