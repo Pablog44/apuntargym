@@ -124,9 +124,14 @@ function Resultados() {
 
   const handleFilterChange = (group, exercise = '') => {
     setSelectedGroup(group);
-    setSelectedExercise(exercise); // Restablecer el ejercicio cuando cambia el grupo muscular
+    setSelectedExercise(''); // Al cambiar el grupo muscular, se deselecciona el ejercicio
     localStorage.setItem('selectedGroup', group);
     localStorage.removeItem('selectedExercise'); // Eliminar el ejercicio seleccionado de localStorage
+  };
+
+  const handleExerciseChange = (exercise) => {
+    setSelectedExercise(exercise);
+    localStorage.setItem('selectedExercise', exercise); // Guardar el ejercicio seleccionado en localStorage
   };
 
   const handleSortChange = (criteria) => {
@@ -143,7 +148,7 @@ function Resultados() {
         <Dropdown
           options={[...new Set(exerciseRecords.map((record) => record.muscleGroup))]}
           selectedOption={selectedGroup}
-          onSelect={(group) => handleFilterChange(group, selectedExercise)} // Actualizamos filtro y guardamos en localStorage
+          onSelect={(group) => handleFilterChange(group)} // Al cambiar grupo, se actualiza y deselecciona el ejercicio
           placeholder="Todos"
         />
 
@@ -154,9 +159,9 @@ function Resultados() {
             .map((record) => record.exercise)
             .filter((exercise, index, self) => self.indexOf(exercise) === index)}
           selectedOption={selectedExercise}
-          onSelect={(exercise) => handleFilterChange(selectedGroup, exercise)} // Actualizamos filtro y guardamos en localStorage
+          onSelect={(exercise) => handleExerciseChange(exercise)} // Solo cambiamos el ejercicio
           placeholder="Todos"
-          disabled={!selectedGroup} 
+          disabled={!selectedGroup}
         />
 
         <button className="apply-button" onClick={applyFilters}>Aplicar Filtros</button>
@@ -167,7 +172,6 @@ function Resultados() {
           options={['Peso', 'Repeticiones', 'Fecha', 'PR']}
           selectedOption={criteriaMap[sortCriteria]} // Mostramos la opción en español
           onSelect={(option) => {
-            // Traducir opción seleccionada de español a la clave utilizada
             const translatedCriteria = reverseCriteriaMap[option];
             handleSortChange(translatedCriteria); // Actualizamos el criterio de ordenación y lo guardamos en localStorage
           }}
