@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { auth, db } from '../firebase';
-import { collection, query, where, orderBy, getDocs, deleteDoc, doc } from 'firebase/firestore';
+import { collection, query, where, orderBy, getDocs, deleteDoc, doc, limit } from 'firebase/firestore'; // Importa 'limit'
 import { onAuthStateChanged } from 'firebase/auth';
 import { useNavigate } from 'react-router-dom';
 import '../Styles.css';
@@ -28,7 +28,8 @@ function Historial() {
     const recordsQuery = query(
       collection(db, 'exerciseRecords'),
       where('userId', '==', userId),
-      orderBy('dateTime', 'desc')
+      orderBy('dateTime', 'desc'),
+      limit(25) // Aquí limitamos la consulta a 25 registros
     );
 
     const snapshot = await getDocs(recordsQuery);
