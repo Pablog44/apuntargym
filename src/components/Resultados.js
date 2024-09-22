@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { db, auth } from '../firebase';
-import { collection, query, where, getDocs, limit, startAfter } from 'firebase/firestore'; // Importa 'limit' y 'startAfter'
+import { collection, query, where, getDocs, orderBy, limit, startAfter } from 'firebase/firestore';
 import { useNavigate } from 'react-router-dom';
 import Dropdown from './Dropdown'; // Importa el nuevo componente Dropdown
 import '../Styles.css';
@@ -9,12 +9,14 @@ import './Resultados.css';
 function Resultados() {
   const [exerciseRecords, setExerciseRecords] = useState([]);
   const [filteredRecords, setFilteredRecords] = useState([]);
-  const [lastVisible, setLastVisible] = useState(null); // Para manejar la paginación
-  const [hasMore, setHasMore] = useState(true); // Para saber si hay más registros para cargar
+
   const [selectedGroup, setSelectedGroup] = useState('');
   const [selectedExercise, setSelectedExercise] = useState('');
   const [sortCriteria, setSortCriteria] = useState('dateTime');
-  const [isLoading, setIsLoading] = useState(false); // Para mostrar el estado de carga
+
+  const [lastVisible, setLastVisible] = useState(null);
+  const [allRecordsLoaded, setAllRecordsLoaded] = useState(false);
+
   const navigate = useNavigate();
 
   // Mapa de traducción de criterios de ordenación
@@ -46,14 +48,49 @@ function Resultados() {
     fetchData();
   }, [navigate]);
 
-  // Cargar los primeros 25 registros
-  const loadExerciseRecords = async (userId) => {
-    setIsLoading(true);
-    const recordsQuery = query(
+  useEffect(() => {
+    // Cargar los filtros guardados de localStorage al cargar la página
+    const savedGroup = localStorage.getItem('selectedGroup');
+    const savedExercise = localStorage.getItem('selectedExercise');
+    const savedSortCriteria = localStorage.getItem('sortCriteria');
+
+    if (savedGroup) setSelectedGroup(savedGroup);
+    if (savedExercise) setSelectedExercise(savedExercise);
+    if (savedSortCriteria) setSortCriteria(savedSortCriteria);
+  }, []);
+
+  const loadExerciseRecords = async (userId, lastDoc = null) => {
+    // Cargar todos los registros para obtener los grupos musculares y ejercicios
+    const allRecordsQuery = query(
+      collection(db, 'exerciseRecords'),
+      where('userId', '==', userId)
+    );
+
+    const allSnapshot = await getDocs(allRecordsQuery);
+    const allRecords = allSnapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
+
+    setExerciseRecords(allRecords);
+
+    // Cargar registros limitados para mostrar
+    let recordsQuery = query(
       collection(db, 'exerciseRecords'),
       where('userId', '==', userId),
-      limit(25)
+      orderBy('dateTime', 'desc'),
+      limit(10)
     );
+
+    if (lastDoc) {
+      recordsQuery = query(
+        collection(db, 'exerciseRecords'),
+        where('userId', '==', userId),
+        orderBy('dateTime', 'desc'),
+        startAfter(lastDoc),
+        limit(10)
+      );
+    }
 
     const snapshot = await getDocs(recordsQuery);
     const records = snapshot.docs.map((doc) => ({
@@ -61,36 +98,19 @@ function Resultados() {
       ...doc.data(),
     }));
 
-    setExerciseRecords(records);
-    setFilteredRecords(records);
-    setLastVisible(snapshot.docs[snapshot.docs.length - 1]); // Guardar el último documento visible
-    setHasMore(snapshot.docs.length === 25); // Si cargamos menos de 25, no hay más registros
-    setIsLoading(false);
-  };
+    if (snapshot.docs.length < 10) {
+      setAllRecordsLoaded(true);
+    } else {
+      setAllRecordsLoaded(false);
+    }
 
-  // Cargar más registros (otros 25)
-  const loadMoreRecords = async () => {
-    if (!lastVisible) return;
-    setIsLoading(true);
+    setLastVisible(snapshot.docs[snapshot.docs.length - 1]);
 
-    const recordsQuery = query(
-      collection(db, 'exerciseRecords'),
-      where('userId', '==', auth.currentUser.uid),
-      startAfter(lastVisible), // Empezar después del último registro cargado
-      limit(25)
-    );
-
-    const snapshot = await getDocs(recordsQuery);
-    const newRecords = snapshot.docs.map((doc) => ({
-      id: doc.id,
-      ...doc.data(),
-    }));
-
-    setExerciseRecords((prevRecords) => [...prevRecords, ...newRecords]);
-    setFilteredRecords((prevRecords) => [...prevRecords, ...newRecords]);
-    setLastVisible(snapshot.docs[snapshot.docs.length - 1]); // Guardar el último documento visible
-    setHasMore(snapshot.docs.length === 25); // Si cargamos menos de 25, no hay más registros
-    setIsLoading(false);
+    if (lastDoc) {
+      setFilteredRecords((prev) => [...prev, ...records]);
+    } else {
+      setFilteredRecords(records);
+    }
   };
 
   const sortAndDisplayResults = useCallback(
@@ -125,7 +145,7 @@ function Resultados() {
 
       setFilteredRecords(sortedRecords);
     },
-    [sortCriteria] // Agregamos `sortCriteria` como dependencia
+    [sortCriteria]
   );
 
   const applyFilters = useCallback(() => {
@@ -139,7 +159,7 @@ function Resultados() {
     }
 
     sortAndDisplayResults(filtered);
-  }, [exerciseRecords, selectedGroup, selectedExercise, sortAndDisplayResults]); // Agregamos `sortAndDisplayResults` como dependencia
+  }, [exerciseRecords, selectedGroup, selectedExercise, sortAndDisplayResults]);
 
   useEffect(() => {
     applyFilters();
@@ -160,6 +180,14 @@ function Resultados() {
   const handleSortChange = (criteria) => {
     setSortCriteria(criteria);
     localStorage.setItem('sortCriteria', criteria); // Guardar el criterio de ordenación en localStorage
+  };
+
+  const loadMoreRecords = () => {
+    auth.onAuthStateChanged((user) => {
+      if (user) {
+        loadExerciseRecords(user.uid, lastVisible);
+      }
+    });
   };
 
   return (
@@ -217,12 +245,11 @@ function Resultados() {
           ))
         )}
       </ul>
-      {hasMore && !isLoading && (
+      {!allRecordsLoaded && (
         <button className="load-more-button" onClick={loadMoreRecords}>
           Cargar más
         </button>
       )}
-      {isLoading && <p>Cargando...</p>}
     </div>
   );
 }
