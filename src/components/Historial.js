@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { auth, db } from '../firebase';
-import { collection, query, where, orderBy, getDocs, deleteDoc, doc, limit } from 'firebase/firestore'; // Importa 'limit'
+import { collection, query, where, orderBy, getDocs, deleteDoc, doc, limit, startAfter } from 'firebase/firestore'; // Importa 'limit' y 'startAfter'
 import { onAuthStateChanged } from 'firebase/auth';
 import { useNavigate } from 'react-router-dom';
 import '../Styles.css';
@@ -8,6 +8,9 @@ import './Historial.css'; // Importa los estilos específicos de Historial
 
 function Historial() {
   const [exerciseRecords, setExerciseRecords] = useState([]);
+  const [lastVisible, setLastVisible] = useState(null); // Almacena el último documento visible para la paginación
+  const [isLoading, setIsLoading] = useState(false); // Manejamos el estado de carga
+  const [hasMore, setHasMore] = useState(true); // Para saber si hay más registros para cargar
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -16,7 +19,7 @@ function Historial() {
         if (!user) {
           navigate('/');
         } else {
-          loadExerciseRecords(user.uid);
+          loadInitialRecords(user.uid);
         }
       });
     };
@@ -24,12 +27,14 @@ function Historial() {
     fetchData();
   }, [navigate]);
 
-  const loadExerciseRecords = async (userId) => {
+  // Cargar los primeros 25 registros
+  const loadInitialRecords = async (userId) => {
+    setIsLoading(true);
     const recordsQuery = query(
       collection(db, 'exerciseRecords'),
       where('userId', '==', userId),
       orderBy('dateTime', 'desc'),
-      limit(25) // Aquí limitamos la consulta a 25 registros
+      limit(25)
     );
 
     const snapshot = await getDocs(recordsQuery);
@@ -38,7 +43,41 @@ function Historial() {
       ...docSnap.data(),
     }));
 
+    // Guardar el último documento visible
+    const lastVisibleDoc = snapshot.docs[snapshot.docs.length - 1];
+
     setExerciseRecords(records);
+    setLastVisible(lastVisibleDoc);
+    setHasMore(snapshot.docs.length === 25); // Si cargamos menos de 25, no hay más registros
+    setIsLoading(false);
+  };
+
+  // Cargar más registros
+  const loadMoreRecords = async () => {
+    if (!lastVisible) return;
+    setIsLoading(true);
+
+    const recordsQuery = query(
+      collection(db, 'exerciseRecords'),
+      where('userId', '==', auth.currentUser.uid),
+      orderBy('dateTime', 'desc'),
+      startAfter(lastVisible), // Empezar después del último registro cargado
+      limit(25)
+    );
+
+    const snapshot = await getDocs(recordsQuery);
+    const newRecords = snapshot.docs.map((docSnap) => ({
+      id: docSnap.id,
+      ...docSnap.data(),
+    }));
+
+    // Guardar el último documento visible
+    const lastVisibleDoc = snapshot.docs[snapshot.docs.length - 1];
+
+    setExerciseRecords([...exerciseRecords, ...newRecords]);
+    setLastVisible(lastVisibleDoc);
+    setHasMore(snapshot.docs.length === 25); // Si cargamos menos de 25, no hay más registros
+    setIsLoading(false);
   };
 
   const confirmDeleteRecord = async (docId, muscleGroup, exercise) => {
@@ -104,6 +143,12 @@ function Historial() {
               );
             })}
           </ul>
+          {hasMore && !isLoading && (
+            <button className="load-more-button" onClick={loadMoreRecords}>
+              Cargar más
+            </button>
+          )}
+          {isLoading && <p>Cargando...</p>}
         </section>
       </main>
     </div>
