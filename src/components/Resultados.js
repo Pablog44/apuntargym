@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { db, auth } from '../firebase';
-import { collection, query, where, getDocs } from 'firebase/firestore';
+import { collection, query, where, getDocs, limit, startAfter } from 'firebase/firestore'; // Importa 'limit' y 'startAfter'
 import { useNavigate } from 'react-router-dom';
 import Dropdown from './Dropdown'; // Importa el nuevo componente Dropdown
 import '../Styles.css';
@@ -9,9 +9,12 @@ import './Resultados.css';
 function Resultados() {
   const [exerciseRecords, setExerciseRecords] = useState([]);
   const [filteredRecords, setFilteredRecords] = useState([]);
+  const [lastVisible, setLastVisible] = useState(null); // Para manejar la paginación
+  const [hasMore, setHasMore] = useState(true); // Para saber si hay más registros para cargar
   const [selectedGroup, setSelectedGroup] = useState('');
   const [selectedExercise, setSelectedExercise] = useState('');
   const [sortCriteria, setSortCriteria] = useState('dateTime');
+  const [isLoading, setIsLoading] = useState(false); // Para mostrar el estado de carga
   const navigate = useNavigate();
 
   // Mapa de traducción de criterios de ordenación
@@ -43,21 +46,13 @@ function Resultados() {
     fetchData();
   }, [navigate]);
 
-  useEffect(() => {
-    // Cargar los filtros guardados de localStorage al cargar la página
-    const savedGroup = localStorage.getItem('selectedGroup');
-    const savedExercise = localStorage.getItem('selectedExercise');
-    const savedSortCriteria = localStorage.getItem('sortCriteria');
-
-    if (savedGroup) setSelectedGroup(savedGroup);
-    if (savedExercise) setSelectedExercise(savedExercise);
-    if (savedSortCriteria) setSortCriteria(savedSortCriteria);
-  }, []);
-
+  // Cargar los primeros 25 registros
   const loadExerciseRecords = async (userId) => {
+    setIsLoading(true);
     const recordsQuery = query(
       collection(db, 'exerciseRecords'),
-      where('userId', '==', userId)
+      where('userId', '==', userId),
+      limit(25)
     );
 
     const snapshot = await getDocs(recordsQuery);
@@ -68,6 +63,34 @@ function Resultados() {
 
     setExerciseRecords(records);
     setFilteredRecords(records);
+    setLastVisible(snapshot.docs[snapshot.docs.length - 1]); // Guardar el último documento visible
+    setHasMore(snapshot.docs.length === 25); // Si cargamos menos de 25, no hay más registros
+    setIsLoading(false);
+  };
+
+  // Cargar más registros (otros 25)
+  const loadMoreRecords = async () => {
+    if (!lastVisible) return;
+    setIsLoading(true);
+
+    const recordsQuery = query(
+      collection(db, 'exerciseRecords'),
+      where('userId', '==', auth.currentUser.uid),
+      startAfter(lastVisible), // Empezar después del último registro cargado
+      limit(25)
+    );
+
+    const snapshot = await getDocs(recordsQuery);
+    const newRecords = snapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
+
+    setExerciseRecords((prevRecords) => [...prevRecords, ...newRecords]);
+    setFilteredRecords((prevRecords) => [...prevRecords, ...newRecords]);
+    setLastVisible(snapshot.docs[snapshot.docs.length - 1]); // Guardar el último documento visible
+    setHasMore(snapshot.docs.length === 25); // Si cargamos menos de 25, no hay más registros
+    setIsLoading(false);
   };
 
   const sortAndDisplayResults = useCallback(
@@ -102,7 +125,7 @@ function Resultados() {
 
       setFilteredRecords(sortedRecords);
     },
-    [sortCriteria]
+    [sortCriteria] // Agregamos `sortCriteria` como dependencia
   );
 
   const applyFilters = useCallback(() => {
@@ -116,7 +139,7 @@ function Resultados() {
     }
 
     sortAndDisplayResults(filtered);
-  }, [exerciseRecords, selectedGroup, selectedExercise, sortAndDisplayResults]);
+  }, [exerciseRecords, selectedGroup, selectedExercise, sortAndDisplayResults]); // Agregamos `sortAndDisplayResults` como dependencia
 
   useEffect(() => {
     applyFilters();
@@ -194,6 +217,12 @@ function Resultados() {
           ))
         )}
       </ul>
+      {hasMore && !isLoading && (
+        <button className="load-more-button" onClick={loadMoreRecords}>
+          Cargar más
+        </button>
+      )}
+      {isLoading && <p>Cargando...</p>}
     </div>
   );
 }
