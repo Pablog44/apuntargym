@@ -105,33 +105,57 @@ function Dashboard() {
     // Restaurar los valores guardados en localStorage
     const savedGroup = localStorage.getItem('selectedGroup');
     const savedExercise = localStorage.getItem('selectedExercise');
+    const savedWeight = localStorage.getItem('weight');
+    const savedRepetitions = localStorage.getItem('repetitions');
+    const savedDate = localStorage.getItem('exerciseDate');
 
     if (savedGroup) {
       setSelectedMuscleGroup(savedGroup);
-      loadExercises(savedGroup); // Cargar los ejercicios cuando se restaura el grupo muscular
+      loadExercises(savedGroup);
     }
 
     if (savedExercise) setSelectedExercise(savedExercise);
+    if (savedWeight) setWeight(savedWeight);
+    if (savedRepetitions) setRepetitions(savedRepetitions);
+    if (savedDate) setExerciseDate(savedDate);
   }, [currentUser, loadMuscleGroups, loadExercises]);
 
   const handleMuscleGroupChange = async (value) => {
     setSelectedMuscleGroup(value);
-    setSelectedExercise(''); // Restablecer la selección del ejercicio
-    localStorage.setItem('selectedGroup', value); // Guardar el grupo muscular en localStorage
-    localStorage.removeItem('selectedExercise'); // Eliminar el ejercicio seleccionado de localStorage
+    setSelectedExercise('');
+    localStorage.setItem('selectedGroup', value);
+    localStorage.removeItem('selectedExercise');
     loadExercises(value);
   };
 
   const handleExerciseChange = (value) => {
     setSelectedExercise(value);
-    localStorage.setItem('selectedExercise', value); // Guardar el ejercicio en localStorage
+    localStorage.setItem('selectedExercise', value);
+  };
+
+  const handleWeightChange = (e) => {
+    const weightValue = e.target.value;
+    setWeight(weightValue);
+    localStorage.setItem('weight', weightValue);
+  };
+
+  const handleRepetitionsChange = (e) => {
+    const repetitionsValue = e.target.value;
+    setRepetitions(repetitionsValue);
+    localStorage.setItem('repetitions', repetitionsValue);
+  };
+
+  const handleDateChange = (e) => {
+    const dateValue = e.target.value;
+    setExerciseDate(dateValue);
+    localStorage.setItem('exerciseDate', dateValue);
   };
 
   const handleSaveExercise = async () => {
     if (currentUser && selectedMuscleGroup && selectedExercise && weight && repetitions) {
       const dateTime = exerciseDate
         ? new Date(exerciseDate).toISOString()
-        : new Date().toISOString(); // Si no se selecciona una fecha, usar la fecha actual en formato ISO
+        : new Date().toISOString();
 
       await addDoc(collection(db, 'exerciseRecords'), {
         userId: currentUser.uid,
@@ -142,6 +166,10 @@ function Dashboard() {
         dateTime,
       });
       alert('Ejercicio guardado correctamente');
+
+      localStorage.removeItem('weight');
+      localStorage.removeItem('repetitions');
+      localStorage.removeItem('exerciseDate');
     } else {
       alert('Por favor, completa todos los campos.');
     }
@@ -165,7 +193,7 @@ function Dashboard() {
           selectedOption={selectedExercise}
           onSelect={handleExerciseChange}
           placeholder="Selecciona un ejercicio"
-          disabled={!selectedMuscleGroup} // Deshabilitar si no hay un grupo muscular seleccionado
+          disabled={!selectedMuscleGroup}
         />
 
         <label htmlFor="weight">Peso (kg):</label>
@@ -173,7 +201,7 @@ function Dashboard() {
           type="number"
           id="weight"
           value={weight}
-          onChange={(e) => setWeight(e.target.value)}
+          onChange={handleWeightChange}
         />
 
         <label htmlFor="repetitions">Repeticiones:</label>
@@ -181,7 +209,7 @@ function Dashboard() {
           type="number"
           id="repetitions"
           value={repetitions}
-          onChange={(e) => setRepetitions(e.target.value)}
+          onChange={handleRepetitionsChange}
         />
 
         <label htmlFor="exercise-date">Fecha:</label>
@@ -189,7 +217,7 @@ function Dashboard() {
           type="datetime-local"
           id="exercise-date"
           value={exerciseDate}
-          onChange={(e) => setExerciseDate(e.target.value)}
+          onChange={handleDateChange}
         />
 
         <button className="save-button" onClick={handleSaveExercise}>
